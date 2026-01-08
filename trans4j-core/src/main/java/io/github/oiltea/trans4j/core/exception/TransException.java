@@ -1,34 +1,32 @@
 package io.github.oiltea.trans4j.core.exception;
 
+/**
+ * 字典翻译异常。
+ * <p>
+ * 在字典翻译过程中发生的异常，如字段不存在、字段访问失败等。
+ *
+ * @author oiltea
+ * @since 1.0.0
+ */
 public class TransException extends RuntimeException {
 
 	/**
-	 * Constructs a new runtime exception with the specified detail message.
-	 * The cause is not initialized, and may subsequently be initialized by a
-	 * call to {@link #initCause}.
+	 * 构造异常。
 	 *
-	 * @param message the detail message. The detail message is saved for
-	 *                later retrieval by the {@link #getMessage()} method.
+	 * @param message 异常消息
 	 */
 	public TransException(String message) {
 		super(message);
 	}
 
 	/**
-	 * Constructs a new runtime exception with the specified detail message and
-	 * cause.  <p>Note that the detail message associated with
-	 * {@code cause} is <i>not</i> automatically incorporated in
-	 * this runtime exception's detail message.
+	 * 构造异常。
 	 *
-	 * @param message the detail message (which is saved for later retrieval
-	 *                by the {@link #getMessage()} method).
-	 * @param cause   the cause (which is saved for later retrieval by the
-	 *                {@link #getCause()} method).  (A {@code null} value is
-	 *                permitted, and indicates that the cause is nonexistent or
-	 *                unknown.)
-	 * @since 1.4
+	 * @param message 异常消息
+	 * @param cause   原因异常
 	 */
 	public TransException(String message, Throwable cause) {
 		super(message, cause);
 	}
+
 }
