@@ -13,20 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.oiltea.trans4j.core.annotation;
+package io.github.oiltea.trans4j.core.cache;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.util.Optional;
 
-@Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.FIELD})
-public @interface Trans {
+public interface DictCache {
 
-  String key();
+  Optional<String> get(String key, String value);
 
-  String[] refs() default {};
-
-  String suffix() default "Text";
+  void put(String key, String value, String text);
 }

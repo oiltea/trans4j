@@ -13,20 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.oiltea.trans4j.core.annotation;
+package io.github.oiltea.trans4j.core.cache;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.util.Map;
+import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 
-@Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.FIELD})
-public @interface Trans {
+public class InMemoryDictCache implements DictCache {
 
-  String key();
+  private static final Map<String, Map<String, String>> CACHE = new ConcurrentHashMap<>();
 
-  String[] refs() default {};
+  @Override
+  public Optional<String> get(String key, String value) {
+    return Optional.ofNullable(CACHE.get(key)).map(o -> o.get(value));
+  }
 
-  String suffix() default "Text";
+  @Override
+  public void put(String key, String value, String text) {
+    CACHE.put(key, CACHE.getOrDefault(key, Map.of(value, text)));
+  }
 }

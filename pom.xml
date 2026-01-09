@@ -35,8 +35,11 @@
 
   <modules>
     <module>trans4j-core</module>
-    <module>trans4j-jackson2-spring-boot-starter</module>
-    <module>trans4j-jackson3-spring-boot-starter</module>
+    <module>trans4j-jackson2-core</module>
+    <module>trans4j-jackson3-core</module>
+    <module>trans4j-jackson2-spring-boot2-starter</module>
+    <module>trans4j-jackson2-spring-boot3-starter</module>
+    <module>trans4j-jackson3-spring-boot4-starter</module>
   </modules>
 
   <properties>
@@ -44,7 +47,6 @@
     <maven.compiler.source>${java.version}</maven.compiler.source>
     <maven.compiler.target>${java.version}</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <spring-boot.version>4.0.1</spring-boot.version>
 
     <!-- Plugins -->
     <maven-gpg-plugin.version>3.2.8</maven-gpg-plugin.version>
@@ -56,16 +58,30 @@
   <dependencyManagement>
     <dependencies>
       <dependency>
-        <artifactId>spring-boot-dependencies</artifactId>
-        <groupId>org.springframework.boot</groupId>
-        <scope>import</scope>
-        <type>pom</type>
-        <version>${spring-boot.version}</version>
+        <groupId>com.fasterxml.jackson.core</groupId>
+        <artifactId>jackson-databind</artifactId>
+        <version>2.20.1</version>
       </dependency>
 
       <dependency>
-        <artifactId>trans4j-core</artifactId>
+        <groupId>tools.jackson.core</groupId>
+        <artifactId>jackson-databind</artifactId>
+        <version>3.0.3</version>
+      </dependency>
+
+      <dependency>
         <groupId>io.github.oiltea</groupId>
+        <artifactId>trans4j-core</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.github.oiltea</groupId>
+        <artifactId>trans4j-jackson2-core</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.github.oiltea</groupId>
+        <artifactId>trans4j-jackson3-core</artifactId>
         <version>${project.version}</version>
       </dependency>
     </dependencies>
@@ -101,6 +117,7 @@
   <profiles>
     <profile>
       <id>release</id>
+
       <build>
         <plugins>
           <plugin>

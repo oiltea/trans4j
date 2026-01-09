@@ -12,7 +12,4 @@
   </parent>
 
   <artifactId>trans4j-core</artifactId>
-
-  <dependencies>
-  </dependencies>
 </project>
