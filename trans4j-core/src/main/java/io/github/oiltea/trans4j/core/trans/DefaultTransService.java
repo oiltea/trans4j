@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package io.github.oiltea.trans4j.core.trans;
 
 import java.util.Collections;
@@ -23,11 +22,6 @@ public class DefaultTransService implements TransService {
 
   private final TransDictProvider transDictProvider;
 
-  /**
-   * 全量字典缓存（仅在 {@link TransDictProvider#getAllDicts()} 返回非空时使用）。
-   * <p>
-   * 注意：此缓存是实例级别的，在服务生命周期内有效。
-   */
   private volatile Map<String, Map<String, String>> allDictsCache;
 
   public DefaultTransService(TransDictProvider transDictProvider) {
@@ -35,19 +29,11 @@ public class DefaultTransService implements TransService {
   }
 
   @Override
-  public String trans(String value) throws Exception {
+  public String trans(String value) {
     getDict(value);
     return value;
   }
 
-  /**
-   * 获取指定类型的字典。
-   * <p>
-   * 优先从全量字典缓存中获取，若不存在则按类型查询。
-   *
-   * @param type 字典类型
-   * @return 字典映射（code -> name），若不存在则返回空 Map
-   */
   private Map<String, String> getDict(String type) {
     // 优先从全量字典缓存获取
     if (allDictsCache != null && allDictsCache.containsKey(type)) {
@@ -58,5 +44,4 @@ public class DefaultTransService implements TransService {
     Map<String, String> dict = transDictProvider.getDict(type);
     return dict != null ? dict : Collections.emptyMap();
   }
-
 }

@@ -1,20 +1,35 @@
+/*
+ * Copyright © 2026 oiltea
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package io.github.oiltea.trans4j.jackson2;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import io.github.oiltea.trans4j.core.annotation.Trans;
-import io.github.oiltea.trans4j.core.trans.Converter;
+import io.github.oiltea.trans4j.core.trans.TransService;
 import java.io.IOException;
 
 public class TransSerializer extends JsonSerializer<String> {
 
-  private final Converter converter;
+  private final TransService transService;
 
   private final Trans trans;
 
-  public TransSerializer(Converter converter, Trans trans) {
-    this.converter = converter;
+  public TransSerializer(TransService transService, Trans trans) {
+    this.transService = transService;
     this.trans = trans;
   }
 
@@ -25,8 +40,6 @@ public class TransSerializer extends JsonSerializer<String> {
       gen.writeNull();
       return;
     }
-    System.err.println(trans);
-    gen.writeString(value + "***********");
+    gen.writeString(transService.trans(value));
   }
-
 }

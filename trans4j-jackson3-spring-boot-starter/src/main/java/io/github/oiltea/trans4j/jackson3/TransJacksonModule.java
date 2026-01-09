@@ -1,13 +1,38 @@
+/*
+ * Copyright © 2026 oiltea
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package io.github.oiltea.trans4j.jackson3;
 
+import io.github.oiltea.trans4j.core.trans.TransService;
 import tools.jackson.databind.module.SimpleModule;
 
 public class TransJacksonModule extends SimpleModule {
 
-  @Override
-  public void setupModule(SetupContext context) {
-    context.insertAnnotationIntrospector(new TransAnnotationIntrospector());
-    super.setupModule(context);
+  private final TransService transService;
+
+  /**
+   * Constructors that should only be used for non-reusable convenience modules used by app code:
+   * "real" modules should use actual name and version number information.
+   */
+  public TransJacksonModule(TransService transService) {
+    this.transService = transService;
   }
 
+  @Override
+  public void setupModule(SetupContext context) {
+    context.insertAnnotationIntrospector(new TransAnnotationIntrospector(transService));
+    super.setupModule(context);
+  }
 }

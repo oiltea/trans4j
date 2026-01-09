@@ -25,5 +25,4 @@ public interface TransDictProvider {
   default Map<String, Map<String, String>> getAllDicts() {
     return Collections.emptyMap();
   }
-
 }

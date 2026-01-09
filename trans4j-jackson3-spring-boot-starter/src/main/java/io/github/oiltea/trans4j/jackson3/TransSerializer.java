@@ -1,6 +1,22 @@
+/*
+ * Copyright © 2026 oiltea
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package io.github.oiltea.trans4j.jackson3;
 
 import io.github.oiltea.trans4j.core.annotation.Trans;
+import io.github.oiltea.trans4j.core.trans.TransService;
 import tools.jackson.core.JacksonException;
 import tools.jackson.core.JsonGenerator;
 import tools.jackson.databind.SerializationContext;
@@ -8,9 +24,12 @@ import tools.jackson.databind.ValueSerializer;
 
 public class TransSerializer extends ValueSerializer<String> {
 
+  private final TransService transService;
+
   private final Trans trans;
 
-  public TransSerializer(Trans trans) {
+  public TransSerializer(TransService transService, Trans trans) {
+    this.transService = transService;
     this.trans = trans;
   }
 
@@ -21,8 +40,6 @@ public class TransSerializer extends ValueSerializer<String> {
       gen.writeNull();
       return;
     }
-    System.err.println(trans);
-    gen.writeString(value + "***********");
+    gen.writeString(transService.trans(value));
   }
-
 }

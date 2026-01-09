@@ -13,10 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.oiltea.trans4j.core.trans;
+package io.github.oiltea.trans4j.core.cache;
 
-public interface Converter {
-
-  String convert(String value);
+public class DefaultLocalCache implements Cache {
 
 }

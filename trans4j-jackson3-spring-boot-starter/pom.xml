@@ -2,52 +2,6 @@
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xmlns="http://maven.apache.org/POM/4.0.0"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <artifactId>trans4j-jackson3-spring-boot-starter</artifactId>
-  <dependencies>
-    <dependency>
-      <artifactId>trans4j-core</artifactId>
-      <groupId>io.github.oiltea</groupId>
-      <version>1.0.0</version>
-    </dependency>
-
-    <!-- Spring Web dependency -->
-    <dependency>
-      <artifactId>spring-webmvc</artifactId>
-      <groupId>org.springframework</groupId>
-    </dependency>
-
-    <dependency>
-      <artifactId>spring-boot-starter-web</artifactId>
-      <groupId>org.springframework.boot</groupId>
-    </dependency>
-
-    <!-- Spring Boot AutoConfigure -->
-    <dependency>
-      <artifactId>spring-boot-autoconfigure</artifactId>
-      <groupId>org.springframework.boot</groupId>
-    </dependency>
-
-
-    <dependency>
-      <artifactId>jackson-annotations</artifactId>
-      <groupId>com.fasterxml.jackson.core</groupId>
-    </dependency>
-    <dependency>
-      <artifactId>jackson-databind</artifactId>
-      <groupId>com.fasterxml.jackson.core</groupId>
-    </dependency>
-    <dependency>
-      <artifactId>jackson-core</artifactId>
-      <groupId>com.fasterxml.jackson.core</groupId>
-    </dependency>
-
-    <!-- Spring Context Support -->
-    <dependency>
-      <artifactId>spring-context</artifactId>
-      <groupId>org.springframework</groupId>
-    </dependency>
-  </dependencies>
-
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
@@ -56,10 +10,52 @@
     <version>1.0.0</version>
   </parent>
 
-  <properties>
-    <maven.compiler.source>8</maven.compiler.source>
-    <maven.compiler.target>8</maven.compiler.target>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-  </properties>
+  <artifactId>trans4j-jackson3-spring-boot-starter</artifactId>
 
+  <dependencies>
+    <dependency>
+      <artifactId>trans4j-core</artifactId>
+      <groupId>io.github.oiltea</groupId>
+    </dependency>
+    <dependency>
+      <groupId>tools.jackson.core</groupId>
+      <artifactId>jackson-databind</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-autoconfigure</artifactId>
+      <scope>provided</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <groupId>org.apache.maven.plugins</groupId>
+      </plugin>
+      <plugin>
+        <artifactId>maven-source-plugin</artifactId>
+        <groupId>org.apache.maven.plugins</groupId>
+        <executions>
+          <execution>
+            <id>attach-sources</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <groupId>org.apache.maven.plugins</groupId>
+      </plugin>
+      <plugin>
+        <artifactId>maven-gpg-plugin</artifactId>
+        <groupId>org.apache.maven.plugins</groupId>
+      </plugin>
+    </plugins>
+  </build>
 </project>

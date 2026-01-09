@@ -2,7 +2,74 @@
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xmlns="http://maven.apache.org/POM/4.0.0"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>io.github.oiltea</groupId>
   <artifactId>trans4j</artifactId>
+  <version>1.0.0</version>
+  <packaging>pom</packaging>
+
+  <name>${project.groupId}:${project.artifactId}</name>
+  <description>trans4j</description>
+  <url>https://github.com/oiltea/trans4j</url>
+
+  <licenses>
+    <license>
+      <name>The Apache Software License, Version 2.0</name>
+      <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
+    </license>
+  </licenses>
+
+  <developers>
+    <developer>
+      <email>oiltea@qq.com</email>
+      <name>oiltea</name>
+    </developer>
+  </developers>
+
+  <scm>
+    <connection>scm:git:git://github.com/oiltea/fastboot.git</connection>
+    <developerConnection>scm:git:ssh://github.com:oiltea/fastboot.git</developerConnection>
+    <url>http://github.com/oiltea/fastboot/tree/master</url>
+  </scm>
+
+  <modules>
+    <module>trans4j-core</module>
+    <module>trans4j-jackson2-spring-boot-starter</module>
+    <module>trans4j-jackson3-spring-boot-starter</module>
+  </modules>
+
+  <properties>
+    <java.version>17</java.version>
+    <maven.compiler.source>${java.version}</maven.compiler.source>
+    <maven.compiler.target>${java.version}</maven.compiler.target>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <spring-boot.version>4.0.1</spring-boot.version>
+
+    <!-- Plugins -->
+    <maven-gpg-plugin.version>3.2.8</maven-gpg-plugin.version>
+    <maven-source-plugin.version>3.4.0</maven-source-plugin.version>
+    <maven-javadoc-plugin.version>3.12.0</maven-javadoc-plugin.version>
+    <maven-compiler-plugin.version>3.14.1</maven-compiler-plugin.version>
+  </properties>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <artifactId>spring-boot-dependencies</artifactId>
+        <groupId>org.springframework.boot</groupId>
+        <scope>import</scope>
+        <type>pom</type>
+        <version>${spring-boot.version}</version>
+      </dependency>
+
+      <dependency>
+        <artifactId>trans4j-core</artifactId>
+        <groupId>io.github.oiltea</groupId>
+        <version>${project.version}</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
 
   <build>
     <pluginManagement>
@@ -13,101 +80,81 @@
           <version>${maven-compiler-plugin.version}</version>
         </plugin>
         <plugin>
-          <artifactId>spring-boot-maven-plugin</artifactId>
-          <groupId>org.springframework.boot</groupId>
-          <version>${spring-boot.version}</version>
+          <artifactId>maven-source-plugin</artifactId>
+          <groupId>org.apache.maven.plugins</groupId>
+          <version>${maven-source-plugin.version}</version>
         </plugin>
         <plugin>
-          <artifactId>spring-javaformat-maven-plugin</artifactId>
-          <groupId>io.spring.javaformat</groupId>
-          <version>${spring-javaformat-maven-plugin.version}</version>
+          <artifactId>maven-javadoc-plugin</artifactId>
+          <groupId>org.apache.maven.plugins</groupId>
+          <version>${maven-javadoc-plugin.version}</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-gpg-plugin</artifactId>
+          <groupId>org.apache.maven.plugins</groupId>
+          <version>${maven-gpg-plugin.version}</version>
         </plugin>
       </plugins>
     </pluginManagement>
-
-    <plugins>
-      <plugin>
-        <artifactId>spring-javaformat-maven-plugin</artifactId>
-        <groupId>io.spring.javaformat</groupId>
-      </plugin>
-    </plugins>
   </build>
-  <dependencyManagement>
-    <dependencies>
-      <!-- Spring -->
-      <dependency>
-        <artifactId>spring-boot-dependencies</artifactId>
-        <groupId>org.springframework.boot</groupId>
-        <scope>import</scope>
-        <type>pom</type>
-        <version>${spring-boot.version}</version>
-      </dependency>
 
-      <!-- Modules -->
-      <dependency>
-        <artifactId>trans4j-core</artifactId>
-        <groupId>io.github.oiltea</groupId>
-        <version>${project.version}</version>
-      </dependency>
-
-      <dependency>
-        <artifactId>lombok</artifactId>
-        <groupId>org.projectlombok</groupId>
-        <version>${lombok.version}</version>
-      </dependency>
-    </dependencies>
-  </dependencyManagement>
-  <description>trans4j</description>
-  <developers>
-    <developer>
-      <email>oiltea@qq.com</email>
-      <name>oiltea</name>
-    </developer>
-  </developers>
-
-  <groupId>io.github.oiltea</groupId>
-  <licenses>
-    <license>
-      <name>The Apache Software License, Version 2.0</name>
-      <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
-    </license>
-  </licenses>
-  <modelVersion>4.0.0</modelVersion>
-
-  <modules>
-    <module>trans4j-core</module>
-    <module>trans4j-jackson2-spring-boot-starter</module>
-    <module>trans4j-jackson3-spring-boot-starter</module>
-  </modules>
-
-  <name>${project.groupId}:${project.artifactId}</name>
-
-  <packaging>pom</packaging>
-
-  <properties>
-    <java.version>17</java.version>
-    <lombok.version>1.18.42</lombok.version>
-    <maven-compiler-plugin.version>3.14.1</maven-compiler-plugin.version>
-    <maven.compiler.source>${java.version}</maven.compiler.source>
-
-    <!-- Spring -->
-    <maven.compiler.target>${java.version}</maven.compiler.target>
-
-    <!-- Compiler -->
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-
-    <!-- Plugin -->
-    <spring-boot.version>4.0.1</spring-boot.version>
-    <spring-javaformat-maven-plugin.version>0.0.47</spring-javaformat-maven-plugin.version>
-  </properties>
-
-  <scm>
-    <connection>scm:git:git://github.com/oiltea/fastboot.git</connection>
-    <developerConnection>scm:git:ssh://github.com:oiltea/fastboot.git</developerConnection>
-    <url>http://github.com/oiltea/fastboot/tree/master</url>
-  </scm>
-
-  <url>https://github.com/oiltea/trans4j</url>
-
-  <version>1.0.0</version>
+  <profiles>
+    <profile>
+      <id>release</id>
+      <build>
+        <plugins>
+          <plugin>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <groupId>org.apache.maven.plugins</groupId>
+          </plugin>
+          <plugin>
+            <artifactId>maven-source-plugin</artifactId>
+            <groupId>org.apache.maven.plugins</groupId>
+            <executions>
+              <execution>
+                <id>attach-sources</id>
+                <phase>verify</phase>
+                <goals>
+                  <goal>jar</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <artifactId>maven-javadoc-plugin</artifactId>
+            <groupId>org.apache.maven.plugins</groupId>
+            <executions>
+              <execution>
+                <id>attach-javadocs</id>
+                <phase>verify</phase>
+                <goals>
+                  <goal>jar</goal>
+                </goals>
+              </execution>
+            </executions>
+            <configuration>
+              <source>${java.version}</source>
+              <doclint>none</doclint>
+              <failOnError>false</failOnError>
+              <encoding>${project.build.sourceEncoding}</encoding>
+              <docencoding>${project.build.sourceEncoding}</docencoding>
+            </configuration>
+          </plugin>
+          <!--          <plugin>-->
+          <!--            <artifactId>maven-gpg-plugin</artifactId>-->
+          <!--            <groupId>org.apache.maven.plugins</groupId>-->
+          <!--            <executions>-->
+          <!--              <execution>-->
+          <!--                <id>sign-artifacts</id>-->
+          <!--                <phase>verify</phase>-->
+          <!--                <goals>-->
+          <!--                  <goal>sign</goal>-->
+          <!--                </goals>-->
+          <!--              </execution>-->
+          <!--            </executions>-->
+          <!--          </plugin>-->
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 </project>
