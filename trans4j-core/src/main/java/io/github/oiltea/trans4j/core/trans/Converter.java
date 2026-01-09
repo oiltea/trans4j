@@ -15,8 +15,8 @@
  */
 package io.github.oiltea.trans4j.core.trans;
 
-public interface TransService {
+public interface Converter {
 
-  String trans(String value) throws Exception;
+  String convert(String value);
 
 }

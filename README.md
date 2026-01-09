@@ -20,6 +20,7 @@
 - `trans4j-core`：核心模块，提供字典翻译的基础能力
 - `trans4j-ext-jpa`：JPA 扩展，支持 JPA 实体自动翻译
 - `trans4j-ext-mybatis`：MyBatis 扩展，支持 MyBatis 查询结果自动翻译
+- `trans4j-ext-rest`：REST 扩展，支持 Web 响应体自动翻译
 - `trans4j-spring-boot-starter`：Spring Boot 自动配置，一键启用
 
 ## 🚀 快速开始
@@ -112,12 +113,12 @@ MyBatis 拦截器会自动处理查询结果，无需额外配置。
 
 ### @Trans 注解说明
 
-| 属性 | 类型 | 默认值 | 说明 |
-|------|------|--------|------|
-| `key` | String | - | 字典类型（必填） |
-| `refs` | String[] | {} | 目标字段名（可选） |
-| `suffix` | String | "Name" | 字段名后缀（当未指定 refs 时使用） |
-| `ignoreNull` | boolean | true | 是否忽略空值 |
+| 属性           | 类型       | 默认值    | 说明                   |
+|--------------|----------|--------|----------------------|
+| `key`        | String   | -      | 字典类型（必填）             |
+| `refs`       | String[] | {}     | 目标字段名（可选）            |
+| `suffix`     | String   | "Name" | 字段名后缀（当未指定 refs 时使用） |
+| `ignoreNull` | boolean  | true   | 是否忽略空值               |
 
 ### 使用示例
 

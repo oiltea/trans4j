@@ -15,8 +15,15 @@
  */
 package io.github.oiltea.trans4j.core.trans;
 
-public interface TransService {
+import java.util.Collections;
+import java.util.Map;
 
-  String trans(String value) throws Exception;
+public interface TransDictProvider {
+
+  Map<String, String> getDict(String type);
+
+  default Map<String, Map<String, String>> getAllDicts() {
+    return Collections.emptyMap();
+  }
 
 }
