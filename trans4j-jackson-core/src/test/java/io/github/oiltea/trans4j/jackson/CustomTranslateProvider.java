@@ -25,14 +25,4 @@ public class CustomTranslateProvider implements TranslateProvider {
   public Map<String, Map<Object, String>> load() {
     return Map.of("GENDER", Map.of("1", "男", "2", "女"));
   }
-
-  @Override
-  public Map<String, Map<Object, String>> refresh() {
-    return Map.of();
-  }
-
-  @Override
-  public Map<String, Map<Object, String>> refresh(String key) {
-    return Map.of();
-  }
 }
