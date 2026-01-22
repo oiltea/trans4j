@@ -16,7 +16,19 @@
 
 package io.github.oiltea.trans4j.core;
 
-public interface TranslateService {
+import java.util.Map;
 
-  String translate(String key, String value);
+public class DefaultTranslateService implements TranslateService {
+
+  private final TranslateProvider provider;
+
+  public DefaultTranslateService(TranslateProvider provider) {
+    this.provider = provider;
+  }
+
+  @Override
+  public String translate(String key, String value) {
+    Map<Object, String> map = provider.load().get(key);
+    return map.get(value);
+  }
 }

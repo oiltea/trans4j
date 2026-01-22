@@ -16,7 +16,23 @@
 
 package io.github.oiltea.trans4j.core;
 
-public interface TranslateService {
+/**
+ * Supported cache types (defined in order of precedence).
+ *
+ * @author Oiltea
+ * @since 1.0.0
+ */
+public enum CacheType {
 
-  String translate(String key, String value);
+  /** Redis backed caching. */
+  REDIS,
+
+  /** Caffeine backed caching. */
+  CAFFEINE,
+
+  /** Simple in-memory caching. */
+  SIMPLE,
+
+  /** No caching. */
+  NONE
 }

@@ -16,38 +16,28 @@
 
 package io.github.oiltea.trans4j.autoconfigure;
 
-import io.github.oiltea.trans4j.core.DafaultTranslateService;
-import io.github.oiltea.trans4j.core.TranslateCache;
+import io.github.oiltea.trans4j.core.DefaultTranslateService;
+import io.github.oiltea.trans4j.core.TranslateCacheProperties;
+import io.github.oiltea.trans4j.core.TranslateProvider;
 import io.github.oiltea.trans4j.core.TranslateService;
 import io.github.oiltea.trans4j.jackson.TranslateJackson3Module;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration(proxyBeanMethods = false)
-public class TranslateJackson3AutoConfiguration {
-
-  @Bean
-  @ConditionalOnMissingBean
-  public TranslateCache translateCache() {
-    return null;
-  }
-
-  @Bean
-  @ConditionalOnMissingBean
-  public TranslateService dictService() {
-    return new DafaultTranslateService(null);
-  }
+@EnableConfigurationProperties(TranslateCacheProperties.class)
+public class TranslateAutoConfiguration {
 
   @Bean
   public TranslateJackson3Module translateJacksonModule(TranslateService service) {
     return new TranslateJackson3Module(service);
   }
 
-  //  @Bean
-  //  public List<TranslateProvider> translateProviders(List<TranslateProvider> providers) {
-  //    return providers.stream()
-  //        .map(CaffeineCachingTranslateProvider::new) // ⭐ 自动加缓存
-  //        .toList();
-  //  }
+  @Bean
+  @ConditionalOnProperty(prefix = "trans4j.cache", name = "type", havingValue = "none")
+  public TranslateService noCacheService(TranslateProvider provider) {
+    return new DefaultTranslateService(provider);
+  }
 }

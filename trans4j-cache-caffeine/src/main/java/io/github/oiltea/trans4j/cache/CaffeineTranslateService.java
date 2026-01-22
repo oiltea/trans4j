@@ -13,22 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.oiltea.trans4j.jackson;
 
+package io.github.oiltea.trans4j.cache;
+
+import com.github.benmanes.caffeine.cache.Cache;
+import com.github.benmanes.caffeine.cache.Caffeine;
 import io.github.oiltea.trans4j.core.TranslateService;
-import tools.jackson.databind.module.SimpleModule;
 
-public class TranslateJackson3Module extends SimpleModule {
+public class CaffeineTranslateService implements TranslateService {
 
-  private final TranslateService translateService;
+  private final TranslateService delegate;
+  private final Cache<Object, Object> cache;
 
-  public TranslateJackson3Module(TranslateService translateService) {
-    this.translateService = translateService;
+  public CaffeineTranslateService(TranslateService delegate, String spec) {
+    this.delegate = delegate;
+    this.cache = Caffeine.from(spec).build();
   }
 
   @Override
-  public void setupModule(SetupContext context) {
-    context.addSerializerModifier(new TranslateJackson3BeanSerializerModifier(translateService));
-    super.setupModule(context);
+  public String translate(String key, String value) {
+    String cacheKey = key + ":" + value;
+    return cache.get(cacheKey, k -> delegate.translate(key, value)).toString();
   }
 }
