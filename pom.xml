@@ -37,7 +37,7 @@
     <module>trans4j-core</module>
     <module>trans4j-cache-caffeine</module>
     <module>trans4j-cache-redis</module>
-    <module>trans4j-jackson-core</module>
+    <module>trans4j-jackson</module>
     <module>trans4j-spring-boot-starter</module>
   </modules>
 
@@ -73,7 +73,7 @@
       </dependency>
       <dependency>
         <groupId>io.github.oiltea</groupId>
-        <artifactId>trans4j-jackson-core</artifactId>
+        <artifactId>trans4j-jackson</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>
