@@ -1,2 +1,0 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-io.github.oiltea.trans4j.autoconfigure.DictAutoConfiguration

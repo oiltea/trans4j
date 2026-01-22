@@ -38,7 +38,7 @@
     <module>trans4j-cache-caffeine</module>
     <module>trans4j-cache-redis</module>
     <module>trans4j-jackson-core</module>
-    <module>trans4j-jackson-spring-boot-starter</module>
+    <module>trans4j-spring-boot-starter</module>
   </modules>
 
   <properties>

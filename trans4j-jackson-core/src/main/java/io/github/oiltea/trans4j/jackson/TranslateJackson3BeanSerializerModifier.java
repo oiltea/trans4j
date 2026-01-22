@@ -1,5 +1,5 @@
 /*
- * Copyright © 2026 oiltea
+ * Copyright © ${YEAR} oiltea
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.oiltea.trans4j.jackson3;
+package io.github.oiltea.trans4j.jackson;
 
-import io.github.oiltea.trans4j.core.TranslateService;
 import io.github.oiltea.trans4j.core.Translate;
+import io.github.oiltea.trans4j.core.TranslateService;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -26,11 +26,11 @@ import tools.jackson.databind.SerializationConfig;
 import tools.jackson.databind.ser.BeanPropertyWriter;
 import tools.jackson.databind.ser.ValueSerializerModifier;
 
-public class TranslateBeanSerializerModifier extends ValueSerializerModifier {
+public class TranslateJackson3BeanSerializerModifier extends ValueSerializerModifier {
 
   private final TranslateService translateService;
 
-  public TranslateBeanSerializerModifier(TranslateService translateService) {
+  public TranslateJackson3BeanSerializerModifier(TranslateService translateService) {
     this.translateService = translateService;
   }
 
@@ -45,7 +45,8 @@ public class TranslateBeanSerializerModifier extends ValueSerializerModifier {
       Translate anno = writer.findAnnotation(Translate.class);
       if (anno != null) {
         BeanPropertyWriter fromWriter = map.get(anno.from());
-        writers.add(new TranslatePropertyWriter(translateService, writer, fromWriter, anno));
+        writers.add(
+            new TranslateJackson3PropertyWriter(translateService, writer, fromWriter, anno));
       } else {
         writers.add(writer);
       }

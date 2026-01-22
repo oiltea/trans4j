@@ -1,5 +1,5 @@
 /*
- * Copyright © 2026 oiltea
+ * Copyright © ${YEAR} oiltea
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,22 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.oiltea.trans4j.jackson2;
 
-import com.fasterxml.jackson.databind.module.SimpleModule;
-import io.github.oiltea.trans4j.core.TranslateService;
+package io.github.oiltea.trans4j.jackson;
 
-public class TranslateJacksonModule extends SimpleModule {
+import io.github.oiltea.trans4j.core.TranslateProvider;
+import java.util.Map;
 
-  private final TranslateService translateService;
+public class CustomTranslateProvider implements TranslateProvider {
 
-  public TranslateJacksonModule(TranslateService translateService) {
-    this.translateService = translateService;
+  @Override
+  public Map<String, Map<Object, String>> load() {
+    return Map.of("GENDER", Map.of("1", "男", "2", "女"));
   }
 
   @Override
-  public void setupModule(SetupContext context) {
-    context.addBeanSerializerModifier(new TranslateBeanSerializerModifier(translateService));
-    super.setupModule(context);
+  public Map<String, Map<Object, String>> refresh() {
+    return Map.of();
+  }
+
+  @Override
+  public Map<String, Map<Object, String>> refresh(String key) {
+    return Map.of();
   }
 }

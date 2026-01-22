@@ -1,5 +1,5 @@
 /*
- * Copyright © 2026 oiltea
+ * Copyright © ${YEAR} oiltea
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,22 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.oiltea.trans4j.jackson3;
+package io.github.oiltea.trans4j.jackson;
 
+import com.fasterxml.jackson.databind.module.SimpleModule;
 import io.github.oiltea.trans4j.core.TranslateService;
-import tools.jackson.databind.module.SimpleModule;
 
-public class TranslateJacksonModule extends SimpleModule {
+public class TranslateJackson2Module extends SimpleModule {
 
   private final TranslateService translateService;
 
-  public TranslateJacksonModule(TranslateService translateService) {
+  public TranslateJackson2Module(TranslateService translateService) {
     this.translateService = translateService;
   }
 
   @Override
   public void setupModule(SetupContext context) {
-    context.addSerializerModifier(new TranslateBeanSerializerModifier(translateService));
+    context.addBeanSerializerModifier(
+        new TranslateJackson2BeanSerializerModifier(translateService));
     super.setupModule(context);
   }
 }
