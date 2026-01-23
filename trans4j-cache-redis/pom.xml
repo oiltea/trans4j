@@ -27,6 +27,8 @@
   </parent>
 
   <artifactId>trans4j-cache-redis</artifactId>
+  <name>trans4j-cache-redis</name>
+  <description>Redis-based distributed cache implementation for trans4j.</description>
 
   <dependencies>
     <dependency>

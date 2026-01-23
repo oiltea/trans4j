@@ -27,6 +27,8 @@
   </parent>
 
   <artifactId>trans4j-cache-caffeine</artifactId>
+  <name>trans4j-core-caffeine</name>
+  <description>Caffeine-based local cache implementation for trans4j.</description>
 
   <dependencies>
     <dependency>

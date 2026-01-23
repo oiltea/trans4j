@@ -25,8 +25,10 @@
   <version>0.0.1-SNAPSHOT</version>
   <packaging>pom</packaging>
 
-  <name>${project.groupId}:${project.artifactId}</name>
-  <description>trans4j</description>
+  <name>trans4j</name>
+  <description>A lightweight and extensible Java translation framework with pluggable cache and
+    Spring Boot integration.
+  </description>
   <url>https://github.com/oiltea/trans4j</url>
 
   <licenses>

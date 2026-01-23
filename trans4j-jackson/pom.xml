@@ -27,6 +27,8 @@
   </parent>
 
   <artifactId>trans4j-jackson</artifactId>
+  <name>trans4j-jackson</name>
+  <description>Jackson-based JSON support for trans4j.</description>
 
   <dependencies>
     <dependency>

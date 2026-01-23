@@ -27,6 +27,8 @@
   </parent>
 
   <artifactId>trans4j-core</artifactId>
+  <name>trans4j-core</name>
+  <description>Core translation framework for trans4j</description>
 
   <dependencies>
     <dependency>

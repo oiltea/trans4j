@@ -27,6 +27,8 @@
   </parent>
 
   <artifactId>trans4j-spring-boot-starter</artifactId>
+  <name>trans4j-spring-boot-starter</name>
+  <description>Spring Boot starter for trans4j with auto-configuration.</description>
 
   <dependencies>
     <dependency>
