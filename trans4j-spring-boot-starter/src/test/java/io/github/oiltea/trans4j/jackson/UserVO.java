@@ -24,6 +24,6 @@ public class UserVO {
 
   private String genger;
 
-  @Translate(key = "GENDER", from = "genger")
+  @Translate(key = "GENDER", from = "gengerText")
   private String gengerText;
 }

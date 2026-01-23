@@ -18,11 +18,12 @@ package io.github.oiltea.trans4j.jackson;
 
 import io.github.oiltea.trans4j.core.TranslateProvider;
 import java.util.Map;
+import org.jspecify.annotations.NonNull;
 
 public class CustomTranslateProvider implements TranslateProvider {
 
   @Override
-  public Map<String, Map<Object, String>> load() {
-    return Map.of("GENDER", Map.of("1", "男", "2", "女"));
+  public @NonNull Map<String, String> get(@NonNull String key) {
+    return Map.of("1", "男", "2", "女");
   }
 }

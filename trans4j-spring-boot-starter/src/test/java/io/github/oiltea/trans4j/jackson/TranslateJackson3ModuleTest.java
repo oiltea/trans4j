@@ -16,7 +16,7 @@
 
 package io.github.oiltea.trans4j.jackson;
 
-import io.github.oiltea.trans4j.core.DafaultTranslateService;
+import io.github.oiltea.trans4j.core.SimpleTranslateService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -30,7 +30,7 @@ public class TranslateJackson3ModuleTest {
   @BeforeEach
   void init() {
     CustomTranslateProvider dictionaryProvider = new CustomTranslateProvider();
-    DafaultTranslateService translateService = new DafaultTranslateService(dictionaryProvider);
+    SimpleTranslateService translateService = new SimpleTranslateService(dictionaryProvider);
     TranslateJackson3Module module = new TranslateJackson3Module(translateService);
 
     mapper = JsonMapper.builder().addModule(module).build();
