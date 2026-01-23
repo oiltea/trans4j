@@ -29,7 +29,7 @@ import org.jspecify.annotations.NonNull;
  * @author oiltea
  * @version 1.0.0
  */
-public interface TranslateProvider {
+public interface TranslationProvider {
 
   /**
    * Retrieves the value associated with the specified key from the map. The key must not be null.

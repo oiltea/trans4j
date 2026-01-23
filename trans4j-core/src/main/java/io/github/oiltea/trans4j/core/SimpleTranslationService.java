@@ -21,9 +21,9 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.jspecify.annotations.NonNull;
 
 /**
- * A simple implementation of the {@link TranslateService} interface that provides translation
+ * A simple implementation of the {@link TranslationService} interface that provides translation
  * services with caching capabilities. This service delegates translation requests to a configured
- * {@link TranslateProvider} and caches the results to improve performance for repeated requests.
+ * {@link TranslationProvider} and caches the results to improve performance for repeated requests.
  *
  * <p>The service uses a concurrent hash map to store translations, ensuring thread-safe access in
  * multi-threaded environments. Each translation key is associated with a map of value translations,
@@ -32,16 +32,16 @@ import org.jspecify.annotations.NonNull;
  * @author Oiltea
  * @version 1.0.0
  */
-public class SimpleTranslateService implements TranslateService {
+public class SimpleTranslationService implements TranslationService {
 
   /**
    * The translation provider instance used for text translation operations.
    *
    * <p>This field holds the reference to the provider that implements the translation logic.
    *
-   * @see TranslateProvider
+   * @see TranslationProvider
    */
-  private final TranslateProvider provider;
+  private final TranslationProvider provider;
 
   /**
    * Thread-safe cache storing nested maps of strings.
@@ -52,11 +52,11 @@ public class SimpleTranslateService implements TranslateService {
   private final ConcurrentHashMap<String, Map<String, String>> cache = new ConcurrentHashMap<>();
 
   /**
-   * Constructs a new SimpleTranslateService with the specified translation provider.
+   * Constructs a new SimpleTranslationService with the specified translation provider.
    *
    * @param provider the translation provider to be used by this service
    */
-  public SimpleTranslateService(TranslateProvider provider) {
+  public SimpleTranslationService(TranslationProvider provider) {
     this.provider = provider;
   }
 

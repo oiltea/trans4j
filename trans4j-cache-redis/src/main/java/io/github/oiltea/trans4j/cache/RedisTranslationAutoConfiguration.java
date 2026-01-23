@@ -16,9 +16,9 @@
 
 package io.github.oiltea.trans4j.cache;
 
-import io.github.oiltea.trans4j.core.TranslateCacheProperties;
-import io.github.oiltea.trans4j.core.TranslateProvider;
-import io.github.oiltea.trans4j.core.TranslateService;
+import io.github.oiltea.trans4j.core.TranslationCacheProperties;
+import io.github.oiltea.trans4j.core.TranslationProvider;
+import io.github.oiltea.trans4j.core.TranslationService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -33,9 +33,9 @@ import org.springframework.data.redis.core.StringRedisTemplate;
  *
  * <p>This class provides auto-configuration for translation services using Redis as the cache
  * backend. It is conditionally loaded when the property `trans4j.cache.type` is set to `redis`. The
- * configuration creates a {@link StringRedisTemplate} bean and a {@link TranslateService} bean that
- * uses Redis for caching translation results, improving performance by reducing repeated calls to
- * the underlying translation provider.
+ * configuration creates a {@link StringRedisTemplate} bean and a {@link TranslationService} bean
+ * that uses Redis for caching translation results, improving performance by reducing repeated calls
+ * to the underlying translation provider.
  *
  * @author Oiltea
  * @version 1.0.0
@@ -43,7 +43,7 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 @Slf4j
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnProperty(prefix = "trans4j.cache", name = "type", havingValue = "redis")
-public class RedisTranslateAutoConfiguration {
+public class RedisTranslationAutoConfiguration {
 
   /**
    * Creates and configures a {@link StringRedisTemplate} bean.
@@ -66,24 +66,24 @@ public class RedisTranslateAutoConfiguration {
   }
 
   /**
-   * Creates a Redis-based translation service bean when a {@link TranslateProvider} bean is
+   * Creates a Redis-based translation service bean when a {@link TranslationProvider} bean is
    * available. This service caches translation results in Redis to improve performance and reduce
    * external API calls.
    *
    * @param provider the translation provider used for actual translation operations
    * @param stringRedisTemplate the Redis template for cache operations
    * @param props configuration properties for the translation cache
-   * @return a configured {@link TranslateService} implementation that uses Redis for caching
+   * @return a configured {@link TranslationService} implementation that uses Redis for caching
    * @since (version or date if applicable)
    */
   @Bean
-  @ConditionalOnBean(TranslateProvider.class)
-  TranslateService redisTranslateService(
-      TranslateProvider provider,
+  @ConditionalOnBean(TranslationProvider.class)
+  TranslationService redisTranslationService(
+      TranslationProvider provider,
       StringRedisTemplate stringRedisTemplate,
-      TranslateCacheProperties props) {
-    log.debug("Register RedisTranslateService");
-    return new RedisTranslateService(
+      TranslationCacheProperties props) {
+    log.debug("Register RedisTranslationService");
+    return new RedisTranslationService(
         provider, stringRedisTemplate, props.getRedis().getTimeToLive());
   }
 }

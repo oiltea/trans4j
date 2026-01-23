@@ -29,7 +29,7 @@ import org.jspecify.annotations.Nullable;
  * @author oiltea
  * @version 1.0.0
  */
-public interface TranslateService {
+public interface TranslationService {
 
   /**
    * Translates a key-value pair into the corresponding localized string.

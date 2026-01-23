@@ -26,8 +26,7 @@ import java.lang.annotation.Target;
  * Annotation used to mark fields that require translation.
  *
  * <p>This annotation is applied to fields to indicate that their values should be translated from
- * one language to another. It specifies the translation key, source field, failure handling
- * strategy, and an optional default value.
+ * one language to another.
  *
  * @author oiltea
  * @version 1.0.0
@@ -52,25 +51,4 @@ public @interface Translate {
    * @return the source field name
    */
   String from();
-
-  /**
-   * Returns the default fail strategy to be used when a failure occurs.
-   *
-   * <p>This method specifies the default behavior for handling failures in the context where this
-   * annotation is applied. The default value is {@code FailStrategy.NULL}, which indicates that
-   * null should be returned or used in case of a failure.
-   *
-   * @return the default fail strategy
-   */
-  FailStrategy failStrategy() default FailStrategy.NULL;
-
-  /**
-   * Returns the default value for this element.
-   *
-   * <p>This method specifies the default value that should be used when no explicit value is
-   * provided.
-   *
-   * @return the default value as a String
-   */
-  String defaultValue() default "";
 }

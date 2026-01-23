@@ -18,8 +18,8 @@ package io.github.oiltea.trans4j.cache;
 
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
-import io.github.oiltea.trans4j.core.TranslateProvider;
-import io.github.oiltea.trans4j.core.TranslateService;
+import io.github.oiltea.trans4j.core.TranslationProvider;
+import io.github.oiltea.trans4j.core.TranslationService;
 import java.util.Map;
 import org.jspecify.annotations.NonNull;
 
@@ -28,23 +28,23 @@ import org.jspecify.annotations.NonNull;
  * translations.
  *
  * <p>This service uses Caffeine cache to store translation mappings retrieved from a {@link
- * TranslateProvider}, improving performance by reducing repeated calls to the underlying provider.
- * It implements the {@link TranslateService} interface to provide translation capabilities with
- * automatic caching.
+ * TranslationProvider}, improving performance by reducing repeated calls to the underlying
+ * provider. It implements the {@link TranslationService} interface to provide translation
+ * capabilities with automatic caching.
  *
  * @author Oiltea
  * @version 1.0.0
  */
-public class CaffeineTranslateService implements TranslateService {
+public class CaffeineTranslationService implements TranslationService {
 
   /**
    * The translation provider used for text translation operations.
    *
    * <p>This provider handles all translation requests and manages the translation process.
    *
-   * @see TranslateProvider
+   * @see TranslationProvider
    */
-  private final TranslateProvider provider;
+  private final TranslationProvider provider;
 
   /**
    * Cache instance for storing key-value pairs where keys are strings and values are maps of
@@ -58,7 +58,7 @@ public class CaffeineTranslateService implements TranslateService {
   private final Cache<String, Map<String, String>> cache;
 
   /**
-   * Creates a new CaffeineTranslateService with the specified translation provider and cache
+   * Creates a new CaffeineTranslationService with the specified translation provider and cache
    * specification.
    *
    * <p>This constructor initializes the service with a translation provider and configures a
@@ -70,7 +70,7 @@ public class CaffeineTranslateService implements TranslateService {
    * @see <a
    *     href="https://github.com/ben-manes/caffeine/wiki/Specification">https://github.com/ben-manes/caffeine/wiki/Specification</a>
    */
-  public CaffeineTranslateService(TranslateProvider provider, String spec) {
+  public CaffeineTranslationService(TranslationProvider provider, String spec) {
     this.provider = provider;
     this.cache = Caffeine.from(spec).build();
   }

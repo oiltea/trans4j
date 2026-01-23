@@ -16,7 +16,7 @@
 
 package io.github.oiltea.trans4j.cache;
 
-import io.github.oiltea.trans4j.core.TranslateProvider;
+import io.github.oiltea.trans4j.core.TranslationProvider;
 import java.time.Duration;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
@@ -27,22 +27,22 @@ import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.StringRedisTemplate;
 
 @SuppressWarnings("unchecked")
-class RedisTranslateServiceTest {
-  private TranslateProvider provider;
+class RedisTranslationServiceTest {
+  private TranslationProvider provider;
   private StringRedisTemplate redis;
   private HashOperations ops;
-  private RedisTranslateService service;
+  private RedisTranslationService service;
 
   @BeforeEach
   void setUp() {
-    provider = Mockito.mock(TranslateProvider.class);
+    provider = Mockito.mock(TranslationProvider.class);
 
     redis = Mockito.mock(StringRedisTemplate.class);
     ops = Mockito.mock(HashOperations.class);
 
     Mockito.when(redis.opsForHash()).thenReturn(ops);
 
-    service = new RedisTranslateService(provider, redis, Duration.ofMinutes(10));
+    service = new RedisTranslationService(provider, redis, Duration.ofMinutes(10));
   }
 
   @Test

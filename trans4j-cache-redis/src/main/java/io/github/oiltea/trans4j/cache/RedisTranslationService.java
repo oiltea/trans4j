@@ -16,8 +16,8 @@
 
 package io.github.oiltea.trans4j.cache;
 
-import io.github.oiltea.trans4j.core.TranslateProvider;
-import io.github.oiltea.trans4j.core.TranslateService;
+import io.github.oiltea.trans4j.core.TranslationProvider;
+import io.github.oiltea.trans4j.core.TranslationService;
 import java.time.Duration;
 import java.util.Map;
 import org.jspecify.annotations.NonNull;
@@ -25,7 +25,7 @@ import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.StringRedisTemplate;
 
 /**
- * Redis-based implementation of the {@link TranslateService} interface.
+ * Redis-based implementation of the {@link TranslationService} interface.
  *
  * <p>This service provides translation functionality with Redis caching support. It caches
  * translation mappings in Redis hashes to improve performance and reduce calls to the underlying
@@ -39,7 +39,7 @@ import org.springframework.data.redis.core.StringRedisTemplate;
  * @author Oiltea
  * @version 1.0.0
  */
-public class RedisTranslateService implements TranslateService {
+public class RedisTranslationService implements TranslationService {
 
   /**
    * The prefix used for keys in the translation cache.
@@ -50,7 +50,7 @@ public class RedisTranslateService implements TranslateService {
   private static final String PREFIX = "trans4j:";
 
   /** The translation provider used for performing text translations. */
-  private final TranslateProvider provider;
+  private final TranslationProvider provider;
 
   /**
    * Redis template for String operations.
@@ -69,15 +69,15 @@ public class RedisTranslateService implements TranslateService {
   private final Duration ttl;
 
   /**
-   * Constructs a new RedisTranslateService with the specified dependencies. This service provides
+   * Constructs a new RedisTranslationService with the specified dependencies. This service provides
    * translation functionality with Redis caching support.
    *
    * @param provider the translation provider used for actual translation operations
    * @param redis the Redis template for caching translated content
    * @param ttl the time-to-live duration for cached entries in Redis
    */
-  public RedisTranslateService(
-      TranslateProvider provider, StringRedisTemplate redis, Duration ttl) {
+  public RedisTranslationService(
+      TranslationProvider provider, StringRedisTemplate redis, Duration ttl) {
     this.provider = provider;
     this.redis = redis;
     this.ttl = ttl;

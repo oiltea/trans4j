@@ -19,16 +19,16 @@ package io.github.oiltea.trans4j.core;
 import org.jspecify.annotations.NonNull;
 
 /**
- * Default implementation of the TranslateService interface.
+ * Default implementation of the TranslationService interface.
  *
- * <p>This class provides translation functionality by delegating to a configured TranslateProvider.
- * It serves as a concrete service that can be used to translate keys into localized values based on
- * the provided locale or context.
+ * <p>This class provides translation functionality by delegating to a configured
+ * TranslationProvider. It serves as a concrete service that can be used to translate keys into
+ * localized values based on the provided locale or context.
  *
  * @author Oiltea
  * @version 1.0.0
  */
-public class DefaultTranslateService implements TranslateService {
+public class DefaultTranslationService implements TranslationService {
 
   /**
    * The translation provider used for text translation operations.
@@ -36,16 +36,16 @@ public class DefaultTranslateService implements TranslateService {
    * <p>This provider handles the actual translation logic and may support multiple translation
    * services.
    *
-   * @see TranslateProvider
+   * @see TranslationProvider
    */
-  private final TranslateProvider provider;
+  private final TranslationProvider provider;
 
   /**
-   * Constructs a new DefaultTranslateService with the specified translation provider.
+   * Constructs a new DefaultTranslationService with the specified translation provider.
    *
    * @param provider the translation provider to be used by this service
    */
-  public DefaultTranslateService(TranslateProvider provider) {
+  public DefaultTranslationService(TranslationProvider provider) {
     this.provider = provider;
   }
 

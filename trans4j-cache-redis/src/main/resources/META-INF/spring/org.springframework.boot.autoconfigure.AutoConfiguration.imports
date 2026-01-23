@@ -14,4 +14,4 @@
 # limitations under the License.
 #
 
-io.github.oiltea.trans4j.cache.RedisTranslateAutoConfiguration
+io.github.oiltea.trans4j.cache.RedisTranslationAutoConfiguration

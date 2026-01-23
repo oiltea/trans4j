@@ -21,7 +21,7 @@ import com.fasterxml.jackson.databind.SerializationConfig;
 import com.fasterxml.jackson.databind.ser.BeanPropertyWriter;
 import com.fasterxml.jackson.databind.ser.BeanSerializerModifier;
 import io.github.oiltea.trans4j.core.Translate;
-import io.github.oiltea.trans4j.core.TranslateService;
+import io.github.oiltea.trans4j.core.TranslationService;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -32,8 +32,8 @@ import java.util.stream.Collectors;
  * extends {@link BeanSerializerModifier} to intercept property serialization and apply translation
  * logic based on the {@link Translate} annotation. When a property is annotated with {@link
  * Translate}, it replaces the original property writer with a custom {@link
- * TranslateJackson2PropertyWriter} that performs translation using the provided {@link
- * TranslateService}.
+ * TranslationJackson2PropertyWriter} that performs translation using the provided {@link
+ * TranslationService}.
  *
  * <p>The modifier scans all bean properties during serialization configuration, identifies
  * properties marked with {@link Translate}, and wraps them to enable dynamic translation of field
@@ -42,33 +42,33 @@ import java.util.stream.Collectors;
  * @author Oiltea
  * @version 1.0.0
  */
-public class TranslateJackson2BeanSerializerModifier extends BeanSerializerModifier {
+public class TranslationJackson2BeanSerializerModifier extends BeanSerializerModifier {
 
   /**
    * The translation service used for text translation operations.
    *
    * <p>This service provides methods to translate text between different languages.
    *
-   * @see TranslateService
+   * @see TranslationService
    */
-  private final TranslateService translateService;
+  private final TranslationService translationService;
 
   /**
-   * Constructs a new TranslateJackson2BeanSerializerModifier with the specified translation
+   * Constructs a new TranslationJackson2BeanSerializerModifier with the specified translation
    * service. This modifier is used to customize the serialization process by integrating
    * translation capabilities.
    *
-   * @param translateService the translation service to be used for translating serialized content
+   * @param translationService the translation service to be used for translating serialized content
    */
-  public TranslateJackson2BeanSerializerModifier(TranslateService translateService) {
-    this.translateService = translateService;
+  public TranslationJackson2BeanSerializerModifier(TranslationService translationService) {
+    this.translationService = translationService;
   }
 
   /**
    * Changes the list of bean property writers by processing properties annotated with {@link
    * Translate}. For each property annotated with {@link Translate}, a custom {@link
-   * TranslateJackson2PropertyWriter} is created and added to the result list. Other properties are
-   * added as-is.
+   * TranslationJackson2PropertyWriter} is created and added to the result list. Other properties
+   * are added as-is.
    *
    * @param config the serialization configuration
    * @param beanDesc the bean description
@@ -89,7 +89,7 @@ public class TranslateJackson2BeanSerializerModifier extends BeanSerializerModif
       if (anno != null) {
         BeanPropertyWriter fromWriter = map.get(anno.from());
         writers.add(
-            new TranslateJackson2PropertyWriter(translateService, writer, fromWriter, anno));
+            new TranslationJackson2PropertyWriter(translationService, writer, fromWriter, anno));
       } else {
         writers.add(writer);
       }

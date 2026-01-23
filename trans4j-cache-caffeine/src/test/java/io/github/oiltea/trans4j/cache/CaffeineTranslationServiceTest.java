@@ -16,22 +16,22 @@
 
 package io.github.oiltea.trans4j.cache;
 
-import io.github.oiltea.trans4j.core.TranslateProvider;
+import io.github.oiltea.trans4j.core.TranslationProvider;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-class CaffeineTranslateServiceTest {
+class CaffeineTranslationServiceTest {
 
-  private TranslateProvider provider;
-  private CaffeineTranslateService service;
+  private TranslationProvider provider;
+  private CaffeineTranslationService service;
 
   @BeforeEach
   void setUp() {
-    provider = Mockito.mock(TranslateProvider.class);
-    service = new CaffeineTranslateService(provider, "maximumSize=100");
+    provider = Mockito.mock(TranslationProvider.class);
+    service = new CaffeineTranslationService(provider, "maximumSize=100");
   }
 
   @Test

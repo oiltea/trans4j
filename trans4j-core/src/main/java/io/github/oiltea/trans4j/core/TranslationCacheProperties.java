@@ -36,7 +36,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @Getter
 @Setter
 @ConfigurationProperties("trans4j.cache")
-public class TranslateCacheProperties {
+public class TranslationCacheProperties {
   /** The type of cache. */
   private CacheType type;
 

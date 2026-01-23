@@ -14,4 +14,4 @@
 # limitations under the License.
 #
 
-io.github.oiltea.trans4j.cache.CaffeineTranslateAutoConfiguration
+io.github.oiltea.trans4j.cache.CaffeineTranslationAutoConfiguration

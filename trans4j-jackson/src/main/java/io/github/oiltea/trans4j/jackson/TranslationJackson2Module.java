@@ -18,14 +18,15 @@ package io.github.oiltea.trans4j.jackson;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
-import io.github.oiltea.trans4j.core.TranslateService;
+import io.github.oiltea.trans4j.core.TranslationService;
 
 /**
  * Jackson 2 module for integrating translation functionality into JSON serialization.
  *
  * <p>This module extends {@link SimpleModule} to provide automatic translation of field values
- * during JSON serialization. It registers a custom {@link TranslateJackson2BeanSerializerModifier}
- * that intercepts the serialization process and applies translation logic to annotated fields.
+ * during JSON serialization. It registers a custom {@link
+ * TranslationJackson2BeanSerializerModifier} that intercepts the serialization process and applies
+ * translation logic to annotated fields.
  *
  * <p>Typical usage involves adding this module to an {@link ObjectMapper} instance to enable
  * on-the-fly translation of specific fields in serialized JSON responses.
@@ -33,33 +34,34 @@ import io.github.oiltea.trans4j.core.TranslateService;
  * @author Oiltea
  * @version 1.0.0
  */
-public class TranslateJackson2Module extends SimpleModule {
+public class TranslationJackson2Module extends SimpleModule {
 
   /**
    * The translation service used for text translation operations.
    *
    * <p>This service provides methods to translate text between different languages.
    *
-   * @see TranslateService
+   * @see TranslationService
    */
-  private final TranslateService translateService;
+  private final TranslationService translationService;
 
   /**
-   * Constructs a new TranslateJackson2Module with the specified translation service. This module is
-   * used to integrate translation functionality with Jackson JSON processing.
+   * Constructs a new TranslationJackson2Module with the specified translation service. This module
+   * is used to integrate translation functionality with Jackson JSON processing.
    *
-   * @param translateService the translation service to be used for text translation
+   * @param translationService the translation service to be used for text translation
    */
-  public TranslateJackson2Module(TranslateService translateService) {
-    this.translateService = translateService;
+  public TranslationJackson2Module(TranslationService translationService) {
+    this.translationService = translationService;
   }
 
   /**
    * Configures the Jackson module by adding a custom bean serializer modifier for translation
    * support.
    *
-   * <p>This method registers a {@link TranslateJackson2BeanSerializerModifier} with the provided
-   * {@link TranslateService} to the setup context, then delegates to the superclass implementation.
+   * <p>This method registers a {@link TranslationJackson2BeanSerializerModifier} with the provided
+   * {@link TranslationService} to the setup context, then delegates to the superclass
+   * implementation.
    *
    * @param context the setup context used to configure the Jackson module
    * @see com.fasterxml.jackson.databind.Module#setupModule(SetupContext)
@@ -67,7 +69,7 @@ public class TranslateJackson2Module extends SimpleModule {
   @Override
   public void setupModule(SetupContext context) {
     context.addBeanSerializerModifier(
-        new TranslateJackson2BeanSerializerModifier(translateService));
+        new TranslationJackson2BeanSerializerModifier(translationService));
     super.setupModule(context);
   }
 }
