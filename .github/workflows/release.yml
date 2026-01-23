@@ -47,7 +47,7 @@ jobs:
 
       - name: Deploy Release
         if: startsWith(github.ref, 'refs/tags/')
-        run: mvn -B clean deploy -P release
+        run: mvn -B clean deploy -P release -Dgpg.passphrase=${{ secrets.GPG_PASSPHRASE }}
         env:
           CENTRAL_USERNAME: ${{ secrets.CENTRAL_USERNAME }}
           CENTRAL_PASSWORD: ${{ secrets.CENTRAL_PASSWORD }}
