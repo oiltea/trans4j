@@ -18,21 +18,81 @@ package io.github.oiltea.trans4j.cache;
 
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
+import io.github.oiltea.trans4j.core.TranslateProvider;
 import io.github.oiltea.trans4j.core.TranslateService;
+import java.util.Map;
+import org.jspecify.annotations.NonNull;
 
+/**
+ * Caffeine-based translation service implementation that provides caching functionality for
+ * translations.
+ *
+ * <p>This service uses Caffeine cache to store translation mappings retrieved from a {@link
+ * TranslateProvider}, improving performance by reducing repeated calls to the underlying provider.
+ * It implements the {@link TranslateService} interface to provide translation capabilities with
+ * automatic caching.
+ *
+ * @author Oiltea
+ * @version 1.0.0
+ */
 public class CaffeineTranslateService implements TranslateService {
 
-  private final TranslateService delegate;
-  private final Cache<Object, Object> cache;
+  /**
+   * The translation provider used for text translation operations.
+   *
+   * <p>This provider handles all translation requests and manages the translation process.
+   *
+   * @see TranslateProvider
+   */
+  private final TranslateProvider provider;
 
-  public CaffeineTranslateService(TranslateService delegate, String spec) {
-    this.delegate = delegate;
+  /**
+   * Cache instance for storing key-value pairs where keys are strings and values are maps of
+   * strings.
+   *
+   * <p>The cache is final and thread-safe, used to improve performance by reducing repeated
+   * computations or data fetching.
+   *
+   * @see Cache
+   */
+  private final Cache<String, Map<String, String>> cache;
+
+  /**
+   * Creates a new CaffeineTranslateService with the specified translation provider and cache
+   * specification.
+   *
+   * <p>This constructor initializes the service with a translation provider and configures a
+   * Caffeine cache using the provided specification string. The cache specification must follow
+   * Caffeine's format.
+   *
+   * @param provider the translation provider to be used for translation operations
+   * @param spec the cache specification string for configuring the Caffeine cache
+   * @see <a
+   *     href="https://github.com/ben-manes/caffeine/wiki/Specification">https://github.com/ben-manes/caffeine/wiki/Specification</a>
+   */
+  public CaffeineTranslateService(TranslateProvider provider, String spec) {
+    this.provider = provider;
     this.cache = Caffeine.from(spec).build();
   }
 
+  /**
+   * Translates a value using the specified key and value.
+   *
+   * <p>This method looks up a translation map in the cache using the provided key. If the map
+   * exists, it returns the translation for the given value. If the map is not found in the cache,
+   * it returns null.
+   *
+   * @param key the key used to retrieve the translation map from the cache
+   * @param value the value to be translated within the retrieved map
+   * @return the translated string, or null if the translation map is not found or the value is not
+   *     present in the map
+   */
   @Override
-  public String translate(String key, String value) {
-    String cacheKey = key + ":" + value;
-    return cache.get(cacheKey, k -> delegate.translate(key, value)).toString();
+  public String translate(@NonNull String key, @NonNull String value) {
+    Map<String, String> map = cache.get(key, provider::get);
+    if (map != null) {
+      return map.get(value);
+    }
+    return null;
   }
 }
