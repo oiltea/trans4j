@@ -23,12 +23,60 @@ import io.github.oiltea.trans4j.core.Translate;
 import io.github.oiltea.trans4j.core.TranslateService;
 import java.util.Objects;
 
+/**
+ * A custom Jackson property writer that translates property values during JSON serialization.
+ *
+ * <p>This class extends {@link BeanPropertyWriter} to intercept the serialization of specific bean
+ * properties and apply translation to their values based on the configured {@link Translate}
+ * annotation. It uses a {@link TranslateService} to perform the actual translation.
+ *
+ * <p>This writer is typically used in scenarios where certain fields of an object need to be
+ * serialized in a different language or format, such as internationalization (i18n) support in JSON
+ * APIs.
+ *
+ * @author Oiltea
+ * @version 1.0.0
+ */
 public class TranslateJackson2PropertyWriter extends BeanPropertyWriter {
 
+  /**
+   * Service for translating text between languages.
+   *
+   * <p>Provides functionality to convert text from one language to another using configured
+   * translation APIs.
+   *
+   * @see TranslateService
+   */
   private final TranslateService translateService;
+
+  /**
+   * The writer for the source property during bean copying or mapping operations.
+   *
+   * <p>This field holds a reference to the property writer that is used to read values from the
+   * source bean when copying properties to a destination bean.
+   *
+   * @see BeanPropertyWriter
+   */
   private final BeanPropertyWriter fromWriter;
+
+  /**
+   * The translation service instance used for text translation operations.
+   *
+   * <p>This field holds a reference to the translation service that provides functionality for
+   * translating text between different languages.
+   *
+   * @see Translate
+   */
   private final Translate translate;
 
+  /**
+   * Constructs a new TranslateJackson2PropertyWriter with the specified dependencies. This writer
+   * is responsible for handling property translation during JSON serialization.
+   *
+   * @param translateService the service used for translation operations
+   * @param fromWriter the original BeanPropertyWriter to delegate serialization to
+   * @param translate the annotation containing translation configuration
+   */
   protected TranslateJackson2PropertyWriter(
       TranslateService translateService, BeanPropertyWriter fromWriter, Translate translate) {
     this.translateService = translateService;
@@ -36,6 +84,17 @@ public class TranslateJackson2PropertyWriter extends BeanPropertyWriter {
     this.translate = translate;
   }
 
+  /**
+   * Serializes a field from the given bean as a JSON field.
+   *
+   * <p>Retrieves the field value from the bean, translates it using a translation service, and
+   * writes it as a string field to the JSON generator.
+   *
+   * @param bean the object from which to get the field value
+   * @param gen the JSON generator to write the field to
+   * @param prov the serializer provider
+   * @throws Exception if an error occurs during serialization or translation
+   */
   public void serializeAsField(Object bean, JsonGenerator gen, SerializerProvider prov)
       throws Exception {
     Object value = fromWriter.get(bean);
