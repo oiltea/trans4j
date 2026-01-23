@@ -1,4 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright © 2026 oiltea
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xmlns="http://maven.apache.org/POM/4.0.0"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
@@ -47,6 +63,7 @@
     <maven.compiler.target>${java.version}</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
+    <caffeine.version>3.2.3</caffeine.version>
     <lombok.version>1.18.42</lombok.version>
 
     <!-- Plugins -->
@@ -54,6 +71,7 @@
     <maven-source-plugin.version>3.4.0</maven-source-plugin.version>
     <maven-javadoc-plugin.version>3.12.0</maven-javadoc-plugin.version>
     <maven-compiler-plugin.version>3.14.1</maven-compiler-plugin.version>
+    <maven-checkstyle-plugin.version>3.6.0</maven-checkstyle-plugin.version>
     <spotless-maven-plugin.version>3.1.0</spotless-maven-plugin.version>
   </properties>
 
@@ -65,6 +83,18 @@
         <version>4.0.1</version>
         <type>pom</type>
         <scope>import</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.mockito</groupId>
+        <artifactId>mockito-bom</artifactId>
+        <version>5.21.0</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+      <dependency>
+        <groupId>com.github.ben-manes.caffeine</groupId>
+        <artifactId>caffeine</artifactId>
+        <version>${caffeine.version}</version>
       </dependency>
       <dependency>
         <groupId>io.github.oiltea</groupId>
@@ -88,24 +118,29 @@
     <pluginManagement>
       <plugins>
         <plugin>
-          <artifactId>maven-compiler-plugin</artifactId>
           <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-compiler-plugin</artifactId>
           <version>${maven-compiler-plugin.version}</version>
         </plugin>
         <plugin>
-          <artifactId>maven-source-plugin</artifactId>
           <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-source-plugin</artifactId>
           <version>${maven-source-plugin.version}</version>
         </plugin>
         <plugin>
-          <artifactId>maven-javadoc-plugin</artifactId>
           <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-javadoc-plugin</artifactId>
           <version>${maven-javadoc-plugin.version}</version>
         </plugin>
         <plugin>
-          <artifactId>maven-gpg-plugin</artifactId>
           <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-gpg-plugin</artifactId>
           <version>${maven-gpg-plugin.version}</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-checkstyle-plugin</artifactId>
+          <version>${maven-checkstyle-plugin.version}</version>
         </plugin>
         <plugin>
           <groupId>com.diffplug.spotless</groupId>
@@ -119,6 +154,18 @@
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
         <groupId>org.apache.maven.plugins</groupId>
+        <configuration>
+          <annotationProcessorPaths>
+            <path>
+              <groupId>org.projectlombok</groupId>
+              <artifactId>lombok</artifactId>
+              <version>${lombok.version}</version>
+            </path>
+          </annotationProcessorPaths>
+          <compilerArgs>
+            <arg>-parameters</arg>
+          </compilerArgs>
+        </configuration>
       </plugin>
       <plugin>
         <artifactId>maven-source-plugin</artifactId>
@@ -152,6 +199,26 @@
           <encoding>${project.build.sourceEncoding}</encoding>
           <docencoding>${project.build.sourceEncoding}</docencoding>
         </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-checkstyle-plugin</artifactId>
+        <configuration>
+          <configLocation>google_checks.xml</configLocation>
+          <consoleOutput>true</consoleOutput>
+          <failsOnError>true</failsOnError>
+          <linkXRef>false</linkXRef>
+          <violationSeverity>warning</violationSeverity>
+        </configuration>
+        <executions>
+          <execution>
+            <id>checkstyle</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>check</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
       <plugin>
         <groupId>com.diffplug.spotless</groupId>
