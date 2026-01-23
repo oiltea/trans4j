@@ -1,4 +1,4 @@
-name: Publish
+name: Publish Maven Release
 
 on:
   workflow_dispatch:
@@ -16,26 +16,30 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-      - name: Setup JDK + Central + GPG
+      - name: Setup JDK + Maven + GPG
         uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: 17
           cache: maven
           server-id: central
-          server-username: CENTRAL_USERNAME
-          server-password: CENTRAL_PASSWORD
+          server-username: ${{ secrets.CENTRAL_USERNAME }}
+          server-password: ${{ secrets.CENTRAL_PASSWORD }}
           gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
 
       - name: Set version from tag
         run: |
           VERSION=${GITHUB_REF#refs/tags/v}
+          echo "Setting project version to $VERSION"
           mvn -B versions:set -DnewVersion=$VERSION versions:commit
 
-      - name: Deploy to Central
-        run: mvn -B clean deploy -P release -DskipTests
+      - name: Deploy to Maven Central
+        run: |
+          echo "Deploying to Maven Central with automatic GPG signing"
+          mvn -B clean deploy -P release -DskipTests
         env:
           CENTRAL_USERNAME: ${{ secrets.CENTRAL_USERNAME }}
           CENTRAL_PASSWORD: ${{ secrets.CENTRAL_PASSWORD }}
