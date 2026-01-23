@@ -17,8 +17,25 @@
 package io.github.oiltea.trans4j.core;
 
 import java.util.Map;
+import org.jspecify.annotations.NonNull;
 
+/**
+ * Interface for translation providers that retrieve localized strings based on a given key.
+ *
+ * <p>Implementations of this interface are responsible for providing translation mappings,
+ * typically from a resource bundle, database, or external service. The primary use case is to
+ * support internationalization (i18n) by allowing dynamic lookup of translated text.
+ *
+ * @author oiltea
+ * @version 1.0.0
+ */
 public interface TranslateProvider {
 
-  Map<String, Map<Object, String>> load();
+  /**
+   * Retrieves the value associated with the specified key from the map. The key must not be null.
+   *
+   * @param key the key whose associated value is to be returned, must not be null
+   * @return the value to which the specified key is mapped, guaranteed to be non-null
+   */
+  @NonNull Map<String, String> get(@NonNull String key);
 }

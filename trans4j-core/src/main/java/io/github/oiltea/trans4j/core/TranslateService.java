@@ -16,7 +16,31 @@
 
 package io.github.oiltea.trans4j.core;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+
+/**
+ * Interface for translation services.
+ *
+ * <p>Provides a contract for translating text based on a key and an original value. Implementations
+ * of this interface are responsible for defining the specific translation logic, which may involve
+ * external APIs, databases, or internal mapping.
+ *
+ * @author oiltea
+ * @version 1.0.0
+ */
 public interface TranslateService {
 
-  String translate(String key, String value);
+  /**
+   * Translates a key-value pair into the corresponding localized string.
+   *
+   * <p>This method uses the provided key and value to look up and return the appropriate localized
+   * translation. Both parameters must be non-null. If no translation is found, the method may
+   * return null.
+   *
+   * @param key the non-null key used to identify the translation string
+   * @param value the non-null value to be used in the translation lookup
+   * @return the localized translation string, or {@code null} if no translation is found
+   */
+  @Nullable String translate(@NonNull String key, @NonNull String value);
 }
