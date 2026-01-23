@@ -264,16 +264,14 @@
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-gpg-plugin</artifactId>
             <configuration>
-              <keyname>d15881156994@gmail.com</keyname>
               <gpgArguments>
-                <arg>--batch</arg>
                 <arg>--pinentry-mode</arg>
                 <arg>loopback</arg>
               </gpgArguments>
             </configuration>
             <executions>
               <execution>
-                <id>attach-sign</id>
+                <id>sign-artifacts</id>
                 <phase>verify</phase>
                 <goals>
                   <goal>sign</goal>
