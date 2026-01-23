@@ -1,6 +1,6 @@
 # Trans4j
 
-[![Build](https://github.com/oiltea/trans4j/actions/workflows/ci.yml/badge.svg)](https://github.com/oiltea/trans4j/actions)
+[![Build](https://github.com/oiltea/trans4j/actions/workflows/build.yml/badge.svg)](https://github.com/oiltea/trans4j/actions)
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
 
 [English](README.md) | [中文](README_zh.md)
