@@ -51,3 +51,14 @@ jobs:
           CENTRAL_USERNAME: ${{ secrets.CENTRAL_USERNAME }}
           CENTRAL_PASSWORD: ${{ secrets.CENTRAL_PASSWORD }}
           MAVEN_GPG_PASSPHRASE: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
+
+      - name: Get latest Maven Central version
+        run: |
+          LATEST=$(curl -s 'https://search.maven.org/solrsearch/select?q=g:"io.github.oiltea"+AND+a:"trans4j"&rows=1&wt=json' | jq -r '.response.docs[0].latestVersion')
+          echo "LATEST_VERSION=$LATEST" >> $GITHUB_ENV
+      
+      - name: Update README
+        run: |
+          sed -i "s/<version>.*<\/version>/<version>${LATEST_VERSION}<\/version>/" README.md
+          sed -i "s/<version>.*<\/version>/<version>${LATEST_VERSION}<\/version>/" README_zh.md
+
