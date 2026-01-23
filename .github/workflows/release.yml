@@ -1,19 +1,20 @@
-name: Release to Maven Central
+name: Publish
 
 on:
   push:
+    branches:
+      - main
     tags:
-      - 'v*'   # 只有打 tag 才发布
+      - 'v*'
 
 jobs:
-  release:
+  publish:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Set up JDK
+      - name: Setup JDK
         uses: actions/setup-java@v4
         with:
           distribution: temurin
@@ -25,13 +26,27 @@ jobs:
           gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
           gpg-passphrase: GPG_PASSPHRASE
 
-      - name: Set version from tag
+      - name: Set Version
         run: |
-          VERSION=${GITHUB_REF#refs/tags/v}
+          if [[ "${GITHUB_REF}" == refs/tags/* ]]; then
+            VERSION=${GITHUB_REF#refs/tags/v}
+          else
+            VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
+          fi
+
+          echo "Version=$VERSION"
           mvn versions:set -DnewVersion=$VERSION
           mvn versions:commit
 
-      - name: Build & Deploy
+      - name: Deploy Snapshot
+        if: startsWith(github.ref, 'refs/heads/')
+        run: mvn -B clean deploy -DskipTests
+        env:
+          CENTRAL_USERNAME: ${{ secrets.CENTRAL_USERNAME }}
+          CENTRAL_PASSWORD: ${{ secrets.CENTRAL_PASSWORD }}
+
+      - name: Deploy Release
+        if: startsWith(github.ref, 'refs/tags/')
         run: mvn -B clean deploy -P release
         env:
           CENTRAL_USERNAME: ${{ secrets.CENTRAL_USERNAME }}
