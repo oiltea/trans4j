@@ -30,6 +30,11 @@ jobs:
           server-password: ${{ secrets.CENTRAL_PASSWORD }}
           gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
 
+      - name: Check GPG key
+        run: |
+          gpg --list-secret-keys --keyid-format LONG
+          gpg --list-keys --keyid-format LONG
+
       - name: Set version from tag
         run: |
           VERSION=${GITHUB_REF#refs/tags/v}
