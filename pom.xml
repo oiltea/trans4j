@@ -50,13 +50,6 @@
     <tag>HEAD</tag>
   </scm>
 
-  <distributionManagement>
-    <snapshotRepository>
-      <id>github</id>
-      <url>https://maven.pkg.github.com/oiltea/trans4j</url>
-    </snapshotRepository>
-  </distributionManagement>
-
   <modules>
     <module>trans4j-core</module>
     <module>trans4j-cache-caffeine</module>
@@ -284,7 +277,6 @@
               </execution>
             </executions>
           </plugin>
-
           <plugin>
             <groupId>org.sonatype.central</groupId>
             <artifactId>central-publishing-maven-plugin</artifactId>
