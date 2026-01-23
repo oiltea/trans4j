@@ -52,8 +52,8 @@
 
   <distributionManagement>
     <snapshotRepository>
-      <id>central</id>
-      <url>https://central.sonatype.com/repository/maven-snapshots/</url>
+      <id>github</id>
+      <url>https://maven.pkg.github.com/oiltea/trans4j</url>
     </snapshotRepository>
   </distributionManagement>
 
@@ -268,8 +268,15 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-gpg-plugin</artifactId>
+            <configuration>
+              <gpgArguments>
+                <arg>--pinentry-mode</arg>
+                <arg>loopback</arg>
+              </gpgArguments>
+            </configuration>
             <executions>
               <execution>
+                <id>attach-sign</id>
                 <phase>verify</phase>
                 <goals>
                   <goal>sign</goal>
