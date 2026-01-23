@@ -26,25 +26,20 @@ jobs:
           java-version: 17
           cache: maven
           server-id: central
-          server-username: ${{ secrets.CENTRAL_USERNAME }}
-          server-password: ${{ secrets.CENTRAL_PASSWORD }}
+          server-username: CENTRAL_USERNAME
+          server-password: CENTRAL_PASSWORD
           gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
-
-      - name: Check GPG key
-        run: |
-          gpg --list-secret-keys --keyid-format LONG
-          gpg --list-keys --keyid-format LONG
+          gpg-passphrase: MAVEN_GPG_PASSPHRASE
 
       - name: Set version from tag
         run: |
           VERSION=${GITHUB_REF#refs/tags/v}
-          echo "Setting project version to $VERSION"
           mvn -B versions:set -DnewVersion=$VERSION versions:commit
 
       - name: Deploy to Maven Central
         run: |
-          echo "Deploying to Maven Central with automatic GPG signing"
-          mvn -B clean deploy -P release -DskipTests
+          mvn -B clean deploy -P release
         env:
           CENTRAL_USERNAME: ${{ secrets.CENTRAL_USERNAME }}
           CENTRAL_PASSWORD: ${{ secrets.CENTRAL_PASSWORD }}
+          MAVEN_GPG_PASSPHRASE: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
