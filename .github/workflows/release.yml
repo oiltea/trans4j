@@ -28,17 +28,8 @@ jobs:
           server-id: central
           server-username: CENTRAL_USERNAME
           server-password: CENTRAL_PASSWORD
-
-      - name: Import GPG key
-        env:
-          GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
-        run: |
-          mkdir -p ~/.gnupg
-          echo "$GPG_PRIVATE_KEY" | gpg --batch --import
-          chmod 600 ~/.gnupg/*
-
-      - name: List GPG keys
-        run: gpg --list-secret-keys --keyid-format LONG
+          gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
+          gpg-passphrase: MAVEN_GPG_PASSPHRASE
 
       - name: Set version from tag
         run: |
