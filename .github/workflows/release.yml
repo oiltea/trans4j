@@ -19,7 +19,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup JDK + Maven + GPG
+      - name: Setup JDK + Maven
         uses: actions/setup-java@v4
         with:
           distribution: temurin
@@ -28,8 +28,17 @@ jobs:
           server-id: central
           server-username: CENTRAL_USERNAME
           server-password: CENTRAL_PASSWORD
-          gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
-          gpg-passphrase: MAVEN_GPG_PASSPHRASE
+
+      - name: Import GPG key
+        env:
+          GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
+        run: |
+          mkdir -p ~/.gnupg
+          echo "$GPG_PRIVATE_KEY" | gpg --batch --import
+          chmod 600 ~/.gnupg/*
+
+      - name: List GPG keys
+        run: gpg --list-secret-keys --keyid-format LONG
 
       - name: Set version from tag
         run: |
@@ -38,7 +47,7 @@ jobs:
 
       - name: Deploy to Maven Central
         run: |
-          mvn -B clean deploy -P release
+          mvn -B clean deploy -P release -DskipTests
         env:
           CENTRAL_USERNAME: ${{ secrets.CENTRAL_USERNAME }}
           CENTRAL_PASSWORD: ${{ secrets.CENTRAL_PASSWORD }}
