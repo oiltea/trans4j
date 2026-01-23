@@ -23,7 +23,7 @@
   <parent>
     <artifactId>trans4j</artifactId>
     <groupId>io.github.oiltea</groupId>
-    <version>1.0.0</version>
+    <version>0.0.1-SNAPSHOT</version>
   </parent>
 
   <artifactId>trans4j-core</artifactId>

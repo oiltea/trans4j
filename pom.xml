@@ -22,7 +22,7 @@
 
   <groupId>io.github.oiltea</groupId>
   <artifactId>trans4j</artifactId>
-  <version>1.0.0</version>
+  <version>0.0.1-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <name>${project.groupId}:${project.artifactId}</name>
@@ -38,15 +38,16 @@
 
   <developers>
     <developer>
-      <email>oiltea@qq.com</email>
+      <email>d15881156994@gmail.com</email>
       <name>oiltea</name>
     </developer>
   </developers>
 
   <scm>
-    <connection>scm:git:git://github.com/oiltea/fastboot.git</connection>
-    <developerConnection>scm:git:ssh://github.com:oiltea/fastboot.git</developerConnection>
-    <url>https://github.com/oiltea/fastboot/tree/master</url>
+    <connection>scm:git:git://github.com/oiltea/trans4j.git</connection>
+    <developerConnection>scm:git:ssh://github.com:oiltea/trans4j.git</developerConnection>
+    <url>https://github.com/oiltea/trans4j/tree/master</url>
+    <tag>HEAD</tag>
   </scm>
 
   <modules>
@@ -74,6 +75,7 @@
     <maven-compiler-plugin.version>3.14.1</maven-compiler-plugin.version>
     <maven-checkstyle-plugin.version>3.6.0</maven-checkstyle-plugin.version>
     <spotless-maven-plugin.version>3.1.0</spotless-maven-plugin.version>
+    <central-publishing-maven-plugin.version>0.10.0</central-publishing-maven-plugin.version>
   </properties>
 
   <dependencyManagement>
@@ -147,6 +149,11 @@
           <groupId>com.diffplug.spotless</groupId>
           <artifactId>spotless-maven-plugin</artifactId>
           <version>${spotless-maven-plugin.version}</version>
+        </plugin>
+        <plugin>
+          <groupId>org.sonatype.central</groupId>
+          <artifactId>central-publishing-maven-plugin</artifactId>
+          <version>${central-publishing-maven-plugin.version}</version>
         </plugin>
       </plugins>
     </pluginManagement>
@@ -234,20 +241,47 @@
             <googleJavaFormat/>
           </java>
         </configuration>
+        <executions>
+          <execution>
+            <phase>verify</phase>
+            <goals>
+              <goal>check</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
-      <!--      <plugin>-->
-      <!--        <artifactId>maven-gpg-plugin</artifactId>-->
-      <!--        <groupId>org.apache.maven.plugins</groupId>-->
-      <!--        <executions>-->
-      <!--          <execution>-->
-      <!--            <id>sign-artifacts</id>-->
-      <!--            <phase>verify</phase>-->
-      <!--            <goals>-->
-      <!--              <goal>sign</goal>-->
-      <!--            </goals>-->
-      <!--          </execution>-->
-      <!--        </executions>-->
-      <!--      </plugin>-->
     </plugins>
   </build>
+
+  <profiles>
+    <profile>
+      <id>release</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-gpg-plugin</artifactId>
+            <executions>
+              <execution>
+                <phase>verify</phase>
+                <goals>
+                  <goal>sign</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+
+          <plugin>
+            <groupId>org.sonatype.central</groupId>
+            <artifactId>central-publishing-maven-plugin</artifactId>
+            <extensions>true</extensions>
+            <configuration>
+              <publishingServerId>central</publishingServerId>
+              <autoPublish>true</autoPublish>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 </project>
