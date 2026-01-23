@@ -83,11 +83,15 @@ Trans4j 支持多种缓存策略，选择适合您需求的方案：
 
 **使用内存缓存，无需额外依赖（默认）**
 
+配置：
+
 ```properties
 trans4j.cache.type=simple
 ```
 
 **禁用缓存（不推荐）**
+
+配置：
 
 ```properties
 trans4j.cache.type=none
@@ -204,7 +208,7 @@ public class UserDto {
 
 ## 👥 作者
 
-- **oiltea** - *初始工作* - [oiltea@qq.com](mailto:oiltea@qq.com)
+- **oiltea** - *初始工作* - [d15881156994@gmail](mailto:d15881156994@gmail.com)
 
 ## 🔗 链接
 

@@ -84,13 +84,15 @@ Trans4j supports multiple cache strategies. Choose the one that fits your needs:
 
 **Using In-memory Cache, no additional dependency required (Default)**
 
+Configure:
+
 ```properties
 trans4j.cache.type=simple
 ```
 
-```
-
 **Disable cache (not recommended)**
+
+Configure:
 
 ```properties
 trans4j.cache.type=none
@@ -208,7 +210,7 @@ This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENS
 
 ## 👥 Authors
 
-- **oiltea** - *Initial work* - [oiltea@qq.com](mailto:oiltea@qq.com)
+- **oiltea** - *Initial work* - [d15881156994@gmail](mailto:d15881156994@gmail)
 
 ## 🔗 Links
 
