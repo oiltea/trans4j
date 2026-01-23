@@ -1,5 +1,5 @@
 #
-# Copyright © 2026 oiltea
+# Copyright © 2026 Oiltea
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,3 +15,5 @@
 #
 
 io.github.oiltea.trans4j.autoconfigure.TranslateAutoConfiguration
+io.github.oiltea.trans4j.autoconfigure.TranslateAutoConfiguration.Jackson2Configuration
+io.github.oiltea.trans4j.autoconfigure.TranslateAutoConfiguration.Jackson3Configuration

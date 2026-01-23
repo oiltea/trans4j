@@ -1,5 +1,5 @@
 /*
- * Copyright © 2026 oiltea
+ * Copyright © 2026 Oiltea
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,9 @@ package io.github.oiltea.trans4j.cache;
 import io.github.oiltea.trans4j.core.TranslateCacheProperties;
 import io.github.oiltea.trans4j.core.TranslateProvider;
 import io.github.oiltea.trans4j.core.TranslateService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -38,6 +40,7 @@ import org.springframework.data.redis.core.StringRedisTemplate;
  * @author Oiltea
  * @version 1.0.0
  */
+@Slf4j
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnProperty(prefix = "trans4j.cache", name = "type", havingValue = "redis")
 public class RedisTranslateAutoConfiguration {
@@ -56,6 +59,8 @@ public class RedisTranslateAutoConfiguration {
    * @since (version or date if applicable, otherwise omit)
    */
   @Bean
+  @ConditionalOnMissingBean(StringRedisTemplate.class)
+  @ConditionalOnBean(RedisConnectionFactory.class)
   StringRedisTemplate stringRedisTemplate(RedisConnectionFactory connectionFactory) {
     return new StringRedisTemplate(connectionFactory);
   }
@@ -66,7 +71,7 @@ public class RedisTranslateAutoConfiguration {
    * external API calls.
    *
    * @param provider the translation provider used for actual translation operations
-   * @param redisTemplate the Redis template for cache operations
+   * @param stringRedisTemplate the Redis template for cache operations
    * @param props configuration properties for the translation cache
    * @return a configured {@link TranslateService} implementation that uses Redis for caching
    * @since (version or date if applicable)
@@ -75,8 +80,10 @@ public class RedisTranslateAutoConfiguration {
   @ConditionalOnBean(TranslateProvider.class)
   TranslateService redisTranslateService(
       TranslateProvider provider,
-      StringRedisTemplate redisTemplate,
+      StringRedisTemplate stringRedisTemplate,
       TranslateCacheProperties props) {
-    return new RedisTranslateService(provider, redisTemplate, props.getRedis().getTimeToLive());
+    log.debug("Register RedisTranslateService");
+    return new RedisTranslateService(
+        provider, stringRedisTemplate, props.getRedis().getTimeToLive());
   }
 }

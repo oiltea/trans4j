@@ -1,5 +1,5 @@
 /*
- * Copyright © 2026 oiltea
+ * Copyright © 2026 Oiltea
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -70,15 +70,22 @@ public class TranslateJackson2PropertyWriter extends BeanPropertyWriter {
   private final Translate translate;
 
   /**
-   * Constructs a new TranslateJackson2PropertyWriter with the specified dependencies. This writer
-   * is responsible for handling property translation during JSON serialization.
+   * Constructs a new TranslateJackson2PropertyWriter with the specified translation service and
+   * property writers. This writer is used to translate property values during JSON serialization.
    *
-   * @param translateService the service used for translation operations
-   * @param fromWriter the original BeanPropertyWriter to delegate serialization to
-   * @param translate the annotation containing translation configuration
+   * @param translateService the service used for translating property values
+   * @param writer the original property writer to delegate serialization to
+   * @param fromWriter the property writer for the source property from which translation is
+   *     performed
+   * @param translate the translation annotation containing configuration for the translation
+   *     process
    */
   protected TranslateJackson2PropertyWriter(
-      TranslateService translateService, BeanPropertyWriter fromWriter, Translate translate) {
+      TranslateService translateService,
+      BeanPropertyWriter writer,
+      BeanPropertyWriter fromWriter,
+      Translate translate) {
+    super(writer);
     this.translateService = translateService;
     this.fromWriter = fromWriter;
     this.translate = translate;

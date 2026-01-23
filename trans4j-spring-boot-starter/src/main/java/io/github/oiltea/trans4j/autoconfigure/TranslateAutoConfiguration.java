@@ -1,5 +1,5 @@
 /*
- * Copyright © 2026 oiltea
+ * Copyright © 2026 Oiltea
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,7 +23,9 @@ import io.github.oiltea.trans4j.core.TranslateProvider;
 import io.github.oiltea.trans4j.core.TranslateService;
 import io.github.oiltea.trans4j.jackson.TranslateJackson2Module;
 import io.github.oiltea.trans4j.jackson.TranslateJackson3Module;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -43,6 +45,7 @@ import org.springframework.context.annotation.Configuration;
  * @author Oiltea
  * @version 1.0.0
  */
+@Slf4j
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnBean(TranslateProvider.class)
 @EnableConfigurationProperties(TranslateCacheProperties.class)
@@ -56,11 +59,12 @@ public class TranslateAutoConfiguration {
    *
    * @param provider the translation provider used by the service
    * @return a new instance of DefaultTranslateService configured with the given provider
-   * @since (version or date if applicable, otherwise omit)
+   * @since 1.0.0
    */
   @Bean
   @ConditionalOnProperty(prefix = "trans4j.cache", name = "type", havingValue = "none")
   public TranslateService defaultTranslateService(TranslateProvider provider) {
+    log.debug("Register DefaultTranslateService");
     return new DefaultTranslateService(provider);
   }
 
@@ -71,7 +75,7 @@ public class TranslateAutoConfiguration {
    *
    * @param provider the translation provider used by the service
    * @return a configured instance of SimpleTranslateService
-   * @since 1.0
+   * @since 1.0.0
    */
   @Bean
   @ConditionalOnProperty(
@@ -80,33 +84,69 @@ public class TranslateAutoConfiguration {
       havingValue = "simple",
       matchIfMissing = true)
   public TranslateService simpleTranslateService(TranslateProvider provider) {
+    log.debug("Register SimpleTranslateService");
     return new SimpleTranslateService(provider);
   }
 
   /**
-   * Creates and configures a TranslateJackson2Module bean for JSON serialization/deserialization
-   * with translation support. This module integrates with the provided TranslateService to enable
-   * automatic field translation during the Jackson processing lifecycle.
+   * Configuration class for Jackson2 integration with translation support.
    *
-   * @param translateService the translation service used by the module to perform text translations
-   * @return a configured instance of TranslateJackson2Module
-   * @since (version or date if applicable, otherwise omit)
+   * <p>This configuration is conditionally loaded when the Jackson ObjectMapper class is available
+   * on the classpath. It provides a custom Jackson module for handling translation operations
+   * during JSON serialization/deserialization.
+   *
+   * @author Oiltea
+   * @version 1.0.0
    */
-  @Bean
-  public TranslateJackson2Module translateJackson2Module(TranslateService translateService) {
-    return new TranslateJackson2Module(translateService);
+  @Slf4j
+  @Configuration(proxyBeanMethods = false)
+  @ConditionalOnClass(name = "com.fasterxml.jackson.databind.ObjectMapper")
+  static class Jackson2Configuration {
+
+    /**
+     * Creates and configures a {@link TranslateJackson2Module} bean for Jackson JSON
+     * serialization/deserialization with translation support. This module is typically used to
+     * integrate translation capabilities into the Jackson ObjectMapper, enabling automatic
+     * translation of specific fields during serialization or deserialization processes.
+     *
+     * @param translateService the translation service used by the module to perform translations
+     * @return a configured instance of {@link TranslateJackson2Module}
+     */
+    @Bean
+    TranslateJackson2Module translateJackson2Module(TranslateService translateService) {
+      log.debug("Register TranslateJackson2Module");
+      return new TranslateJackson2Module(translateService);
+    }
   }
 
   /**
-   * Creates and configures a TranslateJackson3Module bean for JSON serialization/deserialization
-   * with translation support. This bean integrates the provided {@link TranslateService} into the
-   * Jackson ObjectMapper for automatic field translation.
+   * Configuration class for Jackson3 integration with translation support.
    *
-   * @param translateService the translation service used by the module to perform text translations
-   * @return a configured instance of {@link TranslateJackson3Module}
+   * <p>This configuration is conditionally loaded when the Jackson ObjectMapper class is available
+   * on the classpath. It provides a custom Jackson module for handling translation operations
+   * during JSON serialization/deserialization.
+   *
+   * @author Oiltea
+   * @version 1.0.0
    */
-  @Bean
-  public TranslateJackson3Module translateJackson3Module(TranslateService translateService) {
-    return new TranslateJackson3Module(translateService);
+  @Slf4j
+  @Configuration(proxyBeanMethods = false)
+  @ConditionalOnClass(name = "tools.jackson.databind.ObjectMapper")
+  static class Jackson3Configuration {
+
+    /**
+     * Creates and configures a {@link TranslateJackson3Module} bean for Jackson JSON
+     * serialization/deserialization with translation support. This module is typically used to
+     * integrate translation capabilities into the Jackson ObjectMapper, enabling automatic
+     * translation of specific fields during serialization or deserialization processes.
+     *
+     * @param translateService the translation service used by the module to perform translations
+     * @return a configured instance of {@link TranslateJackson3Module}
+     */
+    @Bean
+    TranslateJackson3Module translateJackson3Module(TranslateService translateService) {
+      log.debug("Register TranslateJackson3Module");
+      return new TranslateJackson3Module(translateService);
+    }
   }
 }

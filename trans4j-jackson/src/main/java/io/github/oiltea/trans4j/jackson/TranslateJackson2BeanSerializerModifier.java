@@ -1,5 +1,5 @@
 /*
- * Copyright © 2026 oiltea
+ * Copyright © 2026 Oiltea
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -87,8 +87,9 @@ public class TranslateJackson2BeanSerializerModifier extends BeanSerializerModif
     for (BeanPropertyWriter writer : beanProperties) {
       Translate anno = writer.getAnnotation(Translate.class);
       if (anno != null) {
+        BeanPropertyWriter fromWriter = map.get(anno.from());
         writers.add(
-            new TranslateJackson2PropertyWriter(translateService, map.get(anno.from()), anno));
+            new TranslateJackson2PropertyWriter(translateService, writer, fromWriter, anno));
       } else {
         writers.add(writer);
       }

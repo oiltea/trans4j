@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  ~ Copyright © 2026 oiltea
+  ~ Copyright © 2026 Oiltea
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -30,8 +30,8 @@
 
   <dependencies>
     <dependency>
-      <groupId>io.github.oiltea</groupId>
-      <artifactId>trans4j-core</artifactId>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
     </dependency>
     <dependency>
       <groupId>io.github.oiltea</groupId>
@@ -60,21 +60,5 @@
       <artifactId>lombok</artifactId>
       <optional>true</optional>
     </dependency>
-
-    <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <!--    <dependency>-->
-    <!--      <groupId>io.github.oiltea</groupId>-->
-    <!--      <artifactId>trans4j-cache-caffeine</artifactId>-->
-    <!--      <scope>test</scope>-->
-    <!--    </dependency>-->
-    <!--    <dependency>-->
-    <!--      <groupId>io.github.oiltea</groupId>-->
-    <!--      <artifactId>trans4j-cache-redis</artifactId>-->
-    <!--      <scope>test</scope>-->
-    <!--    </dependency>-->
   </dependencies>
 </project>

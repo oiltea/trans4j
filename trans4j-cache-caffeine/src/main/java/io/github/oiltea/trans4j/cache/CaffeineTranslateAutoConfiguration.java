@@ -1,5 +1,5 @@
 /*
- * Copyright © 2026 oiltea
+ * Copyright © 2026 Oiltea
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,6 +19,7 @@ package io.github.oiltea.trans4j.cache;
 import io.github.oiltea.trans4j.core.TranslateCacheProperties;
 import io.github.oiltea.trans4j.core.TranslateProvider;
 import io.github.oiltea.trans4j.core.TranslateService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
@@ -35,6 +36,7 @@ import org.springframework.context.annotation.Configuration;
  * @author Oiltea
  * @version 1.0.0
  */
+@Slf4j
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnProperty(prefix = "trans4j.cache", name = "type", havingValue = "caffeine")
 public class CaffeineTranslateAutoConfiguration {
@@ -55,6 +57,7 @@ public class CaffeineTranslateAutoConfiguration {
   @ConditionalOnBean(TranslateProvider.class)
   TranslateService caffeineTranslateService(
       TranslateProvider provider, TranslateCacheProperties props) {
+    log.debug("Register CaffeineTranslateService");
     return new CaffeineTranslateService(provider, props.getCaffeine().getSpec());
   }
 }
