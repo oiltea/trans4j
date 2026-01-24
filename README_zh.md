@@ -1,13 +1,11 @@
 # Trans4j
 
-[![CI-GitHub](https://img.shields.io/badge/CI-GitHub%20Actions-blue)](https://github.com/oiltea/trans4j/actions)
-[![CI](https://github.com/oiltea/trans4j/actions/workflows/ci.yml/badge.svg)](https://github.com/oiltea/trans4j/actions)
-[![Coverage](https://codecov.io/gh/oiltea/trans4j/branch/main/graph/badge.svg)](https://codecov.io/gh/oiltea/trans4j)
-[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
-[![Maven Central Version](https://img.shields.io/maven-central/v/io.github.oiltea/trans4j.svg)](https://search.maven.org/artifact/io.github.oiltea/trans4j)
-[![GitHub release](https://img.shields.io/github/v/release/oiltea/trans4j)](https://github.com/oiltea/trans4j/releases)
-[![Java Version](https://img.shields.io/badge/java-17-brightgreen.svg)](https://adoptium.net/)
-[![Spring Boot Version](https://img.shields.io/badge/Spring%20Boot-2.x%20%7C%203.x%20%7C%204.x-6DB33F)](https://spring.io/projects/spring-boot)
+[![CI](https://img.shields.io/github/actions/workflow/status/oiltea/trans4j/ci.yml?logo=github&label=CI)](https://github.com/oiltea/trans4j/actions)
+[![Codecov](https://img.shields.io/codecov/c/github/oiltea/trans4j?logo=codecov&label=Coverage)](https://codecov.io/gh/oiltea/trans4j)
+[![Java Version](https://img.shields.io/badge/java-17-brightgreen.svg?logo=openjdk&label=Java)](https://openjdk.org/)
+[![Spring Boot Version](https://img.shields.io/badge/Spring%20Boot-2.x%20%7C%203.x%20%7C%204.x-6DB33F?logo=springboot&label=Spring%20Boot)](https://spring.io/projects/spring-boot)
+[![GitHub Release](https://img.shields.io/github/v/release/oiltea/trans4j?logo=github&label=GitHub%20Release)](https://github.com/oiltea/trans4j/releases)
+[![Maven Central Version](https://img.shields.io/maven-central/v/io.github.oiltea/trans4j?logo=apachemaven&label=Maven%20Central)](https://search.maven.org/artifact/io.github.oiltea/trans4j)
 
 [English](README.md) | [中文](README_zh.md)
 
