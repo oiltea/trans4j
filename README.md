@@ -1,8 +1,12 @@
 # Trans4j
 
-[![Build](https://github.com/oiltea/trans4j/actions/workflows/build.yml/badge.svg)](https://github.com/oiltea/trans4j/actions)
+[![CI-GitHub](https://img.shields.io/badge/CI-GitHub%20Actions-blue)](https://github.com/oiltea/trans4j/actions)
+[![CI](https://github.com/oiltea/trans4j/actions/workflows/ci.yml/badge.svg)](https://github.com/oiltea/trans4j/actions)
+[![Coverage](https://codecov.io/gh/oiltea/trans4j/branch/main/graph/badge.svg)](https://codecov.io/gh/oiltea/trans4j)
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
-[![Maven Central](https://img.shields.io/maven-central/v/io.github.oiltea/trans4j.svg)](https://search.maven.org/artifact/io.github.oiltea/trans4j)
+[![Maven Central Version](https://img.shields.io/maven-central/v/io.github.oiltea/trans4j.svg)](https://search.maven.org/artifact/io.github.oiltea/trans4j)
+[![Java Version](https://img.shields.io/badge/java-17-brightgreen.svg)](https://adoptium.net/)
+[![Spring Boot Version](https://img.shields.io/badge/Spring%20Boot-2.x%20%7C%203.x%20%7C%204.x-6DB33F)](https://spring.io/projects/spring-boot)
 
 [English](README.md) | [中文](README_zh.md)
 

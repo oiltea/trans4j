@@ -6,7 +6,7 @@ on:
       version:
         description: 'Release version (e.g. 1.0.0)'
         required: false
-        
+
   push:
     tags:
       - 'v*'
@@ -18,14 +18,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
-      - name: Cache Maven packages
-        uses: actions/cache@v3
-        with:
-          path: ~/.m2/repository
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-          restore-keys: |
-            ${{ runner.os }}-maven-
 
       - name: Setup JDK + Maven
         uses: actions/setup-java@v4
@@ -52,11 +44,19 @@ jobs:
           CENTRAL_PASSWORD: ${{ secrets.CENTRAL_PASSWORD }}
           MAVEN_GPG_PASSPHRASE: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
 
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ github.ref_name }}
+          generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Get latest Maven Central version
         run: |
           LATEST=$(curl -s 'https://search.maven.org/solrsearch/select?q=g:"io.github.oiltea"+AND+a:"trans4j"&rows=1&wt=json' | jq -r '.response.docs[0].latestVersion')
           echo "LATEST_VERSION=$LATEST" >> $GITHUB_ENV
-      
+
       - name: Update README
         run: |
           sed -i "s/<version>.*<\/version>/<version>${LATEST_VERSION}<\/version>/" README.md
