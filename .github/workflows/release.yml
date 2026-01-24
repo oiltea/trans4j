@@ -41,7 +41,7 @@ jobs:
 
       - name: Deploy to Maven Central
         run: |
-          mvn -B clean deploy -P release -DskipTests
+          mvn -B clean deploy -P release
         env:
           CENTRAL_USERNAME: ${{ secrets.CENTRAL_USERNAME }}
           CENTRAL_PASSWORD: ${{ secrets.CENTRAL_PASSWORD }}
@@ -55,13 +55,24 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Get latest Maven Central version
-        run: |
-          LATEST=$(curl -s 'https://search.maven.org/solrsearch/select?q=g:"io.github.oiltea"+AND+a:"trans4j"&rows=1&wt=json' | jq -r '.response.docs[0].latestVersion')
-          echo "LATEST_VERSION=$LATEST" >> $GITHUB_ENV
+      - name: Extract version
+        run: echo "LATEST_VERSION=${GITHUB_REF_NAME#v}" >> $GITHUB_ENV
 
       - name: Update README
         run: |
           sed -i "s/<version>.*<\/version>/<version>${LATEST_VERSION}<\/version>/" README.md
           sed -i "s/<version>.*<\/version>/<version>${LATEST_VERSION}<\/version>/" README_zh.md
 
+      - name: Commit README
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git commit -am "docs: update version to ${LATEST_VERSION}" || echo "No changes"
+          git push
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
