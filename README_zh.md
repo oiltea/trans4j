@@ -40,7 +40,7 @@
 <dependency>
   <groupId>io.github.oiltea</groupId>
   <artifactId>trans4j-spring-boot-starter</artifactId>
-  <version>1.0.0</version>
+  <version>1.0.5</version>
 </dependency>
 ```
 
@@ -113,7 +113,7 @@ trans4j.cache.type=none
 <dependency>
   <groupId>io.github.oiltea</groupId>
   <artifactId>trans4j-cache-caffeine</artifactId>
-  <version>1.0.0</version>
+  <version>1.0.5</version>
 </dependency>
 ```
 
@@ -133,7 +133,7 @@ trans4j.cache.caffeine.spec=maximumSize=1000,expireAfterWrite=30m
 <dependency>
   <groupId>io.github.oiltea</groupId>
   <artifactId>trans4j-cache-redis</artifactId>
-  <version>1.0.0</version>
+  <version>1.0.5</version>
 </dependency>
 ```
 
