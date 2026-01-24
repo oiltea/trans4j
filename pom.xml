@@ -22,7 +22,7 @@
 
   <groupId>io.github.oiltea</groupId>
   <artifactId>trans4j</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>1.0.5</version>
   <packaging>pom</packaging>
 
   <name>trans4j</name>

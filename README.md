@@ -42,7 +42,7 @@ integration. Automatic field translation during JSON serialization.
 <dependency>
   <groupId>io.github.oiltea</groupId>
   <artifactId>trans4j-spring-boot-starter</artifactId>
-  <version>1.0.0</version>
+  <version>1.0.5</version>
 </dependency>
 ```
 
@@ -115,7 +115,7 @@ Add dependency:
 <dependency>
   <groupId>io.github.oiltea</groupId>
   <artifactId>trans4j-cache-caffeine</artifactId>
-  <version>1.0.0</version>
+  <version>1.0.5</version>
 </dependency>
 ```
 
@@ -135,7 +135,7 @@ Add dependency:
 <dependency>
   <groupId>io.github.oiltea</groupId>
   <artifactId>trans4j-cache-redis</artifactId>
-  <version>1.0.0</version>
+  <version>1.0.5</version>
 </dependency>
 ```
 
