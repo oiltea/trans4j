@@ -1,4 +1,4 @@
-name: Publish Maven Release
+name: Publish Release
 
 on:
   workflow_dispatch:
@@ -10,6 +10,9 @@ on:
   push:
     tags:
       - 'v*'
+
+permissions:
+  contents: write
 
 jobs:
   publish:
