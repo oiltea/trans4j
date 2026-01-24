@@ -65,7 +65,7 @@
     <maven.compiler.target>${java.version}</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-    <spring-boot.version>4.0.1</spring-boot.version>
+    <spring-boot.version>4.0.2</spring-boot.version>
     <mockito.version>5.21.0</mockito.version>
     <caffeine.version>3.2.3</caffeine.version>
     <lombok.version>1.18.42</lombok.version>
