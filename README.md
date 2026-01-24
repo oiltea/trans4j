@@ -28,7 +28,6 @@ integration. Automatic field translation during JSON serialization.
 
 - Java 17+
 - Spring Boot 2.x/3.x/4.x
-- Maven 3.6+
 
 ## 🚀 Quick Start
 
