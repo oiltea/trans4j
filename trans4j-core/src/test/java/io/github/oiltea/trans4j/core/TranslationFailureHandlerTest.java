@@ -49,10 +49,10 @@ class TranslationFailureHandlerTest {
   }
 
   @Test
-  @DisplayName("OriginalValueFailureHandler should return empty string when original is null")
+  @DisplayName("OriginalValueFailureHandler should return null when original is null")
   void original_value_handler_should_handle_null() {
     TranslationFailureHandler handler = new OriginalValueFailureHandler();
-    assertEquals("", handler.handle("key", null));
+    assertNull(handler.handle("key", null));
   }
 
   @Test

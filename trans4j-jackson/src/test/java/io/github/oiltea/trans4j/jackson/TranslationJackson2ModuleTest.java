@@ -219,7 +219,7 @@ class TranslationJackson2ModuleTest {
     JsonNode jsonNode = mapper.readTree(json);
 
     assertTrue(jsonNode.get("role").isNull());
-    assertEquals("", jsonNode.get("roleText").asText());
+    assertTrue(jsonNode.get("roleText").isNull());
   }
 
   @Test
