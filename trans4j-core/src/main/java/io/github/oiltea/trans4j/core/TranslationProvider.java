@@ -32,10 +32,10 @@ import org.jspecify.annotations.NonNull;
 public interface TranslationProvider {
 
   /**
-   * Retrieves the value associated with the specified key from the map. The key must not be null.
+   * Retrieves the value associated with the specified key from the map.
    *
-   * @param key the key whose associated value is to be returned, must not be null
-   * @return the value to which the specified key is mapped, guaranteed to be non-null
+   * @param key the key whose associated value is to be returned
+   * @return the value to which the specified key is mapped
    */
-  @NonNull Map<String, String> get(@NonNull String key);
+  Map<String, String> get(@NonNull String key);
 }

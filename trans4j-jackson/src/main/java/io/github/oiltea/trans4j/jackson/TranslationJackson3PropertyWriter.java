@@ -17,9 +17,8 @@
 package io.github.oiltea.trans4j.jackson;
 
 import io.github.oiltea.trans4j.core.Translate;
-import io.github.oiltea.trans4j.core.TranslationFailureHandlers;
 import io.github.oiltea.trans4j.core.TranslationService;
-import io.github.oiltea.trans4j.core.handler.TranslationFailureHandler;
+import java.util.Objects;
 import tools.jackson.core.JsonGenerator;
 import tools.jackson.databind.SerializationContext;
 import tools.jackson.databind.ser.BeanPropertyWriter;
@@ -94,39 +93,8 @@ public class TranslationJackson3PropertyWriter extends BeanPropertyWriter {
   @Override
   public void serializeAsProperty(Object bean, JsonGenerator g, SerializationContext ctxt)
       throws Exception {
-    String key = translate.key();
-    Object value = fromWriter.get(bean);
-    String originalValue = value != null ? value.toString() : null;
-
-    if (key != null && value != null) {
-      String translated = translationService.translate(key, originalValue);
-      if (translated != null) {
-        g.writeStringProperty(getName(), translated);
-      } else {
-        writeFailureValue(g, key, originalValue);
-      }
-    } else {
-      writeFailureValue(g, key, originalValue);
-    }
-  }
-
-  /**
-   * Writes the appropriate value when translation fails based on the configured failure strategy.
-   *
-   * @param g the JSON generator to write to
-   * @param key the translation key
-   * @param originalValue the original untranslated value
-   * @since 1.1.0
-   */
-  private void writeFailureValue(JsonGenerator g, String key, String originalValue) {
-    TranslationFailureHandler handler =
-        TranslationFailureHandlers.getHandler(translate.failureHandler());
-    String fallbackValue = handler.handle(key, originalValue);
-
-    if (fallbackValue != null) {
-      g.writeStringProperty(getName(), fallbackValue);
-    } else {
-      g.writeNullProperty(getName());
-    }
+    String value = Objects.toString(fromWriter.get(bean), null);
+    String result = translationService.translate(translate.key(), value);
+    g.writeStringProperty(getName(), translate.nullPolicy().getHandler().apply(result));
   }
 }

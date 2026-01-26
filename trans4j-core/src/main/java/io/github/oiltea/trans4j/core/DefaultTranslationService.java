@@ -17,6 +17,7 @@
 package io.github.oiltea.trans4j.core;
 
 import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Default implementation of the TranslationService interface.
@@ -59,8 +60,9 @@ public class DefaultTranslationService implements TranslationService {
    * @param value the value to be translated, must not be null
    * @return the translated string for the given key and value
    */
+  @Nullable
   @Override
-  public String translate(@NonNull String key, @NonNull String value) {
+  public String doTranslate(@NonNull String key, @NonNull String value) {
     return provider.get(key).get(value);
   }
 }

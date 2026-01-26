@@ -17,7 +17,6 @@
 package io.github.oiltea.trans4j.core;
 
 import org.jspecify.annotations.NonNull;
-import org.jspecify.annotations.Nullable;
 
 /**
  * Interface for translation services.
@@ -32,15 +31,32 @@ import org.jspecify.annotations.Nullable;
 public interface TranslationService {
 
   /**
-   * Translates a key-value pair into the corresponding localized string.
+   * Translates a key-value pair using the underlying translation mechanism.
    *
-   * <p>This method uses the provided key and value to look up and return the appropriate localized
-   * translation. Both parameters must be non-null. If no translation is found, the method may
-   * return null.
+   * <p>This method serves as a default implementation that performs null checks on the provided
+   * arguments before delegating to the actual translation logic. If either the key or the value is
+   * null, the method returns null.
    *
-   * @param key the non-null key used to identify the translation string
-   * @param value the non-null value to be used in the translation lookup
-   * @return the localized translation string, or {@code null} if no translation is found
+   * @param key the translation key, can be null
+   * @param value the value associated with the key for translation, can be null
+   * @return the translated string, or null if either the key or value is null
    */
-  @Nullable String translate(@NonNull String key, @NonNull String value);
+  default String translate(String key, String value) {
+    if (key == null || value == null) {
+      return null;
+    }
+    return doTranslate(key, value);
+  }
+
+  /**
+   * Translates the given key using the provided value.
+   *
+   * <p>This method performs translation by processing the key with the specified value.
+   *
+   * @param key the translation key to be processed, must not be null
+   * @param value the value to be used for translation, must not be null
+   * @return the translated string
+   * @since 1.1.0
+   */
+  String doTranslate(@NonNull String key, @NonNull String value);
 }

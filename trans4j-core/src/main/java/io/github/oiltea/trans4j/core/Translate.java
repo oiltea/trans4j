@@ -16,13 +16,15 @@
 
 package io.github.oiltea.trans4j.core;
 
-import io.github.oiltea.trans4j.core.handler.NullFailureHandler;
-import io.github.oiltea.trans4j.core.handler.TranslationFailureHandler;
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+import java.util.Objects;
+import java.util.function.Function;
+import lombok.Getter;
+import org.jspecify.annotations.NonNull;
 
 /**
  * Annotation used to mark fields that require translation.
@@ -43,7 +45,7 @@ public @interface Translate {
    *
    * @return the key as a String
    */
-  String key();
+  @NonNull String key();
 
   /**
    * Gets the source field name.
@@ -52,14 +54,66 @@ public @interface Translate {
    *
    * @return the source field name
    */
-  String from();
+  @NonNull String from();
 
   /**
-   * The failure handler class to use when translation fails.
+   * Returns the null policy for this annotation.
    *
-   * <p>Defaults to {@link NullFailureHandler} which returns null on failure.
+   * <p>The null policy determines how null values should be handled.
    *
-   * @return the failure handler class
+   * @return the null policy, defaults to {@code NullPolicy.NULL}
+   * @since 1.1.0
    */
-  Class<? extends TranslationFailureHandler> failureHandler() default NullFailureHandler.class;
+  NullPolicy nullPolicy() default NullPolicy.NULL;
+
+  /**
+   * Enumeration defining policies for handling null or empty values in string processing.
+   *
+   * <p>This enum provides strategies for converting null values to either null references or empty
+   * strings, allowing flexible null handling in various string manipulation scenarios.
+   *
+   * @author Oiltea
+   * @since 1.1.0
+   */
+  @Getter
+  enum NullPolicy {
+    /**
+     * A constant representing a null value transformation function.
+     *
+     * <p>This function takes any value and returns null, effectively ignoring the input and always
+     * producing a null result. It can be used as a default or placeholder transformation in
+     * functional pipelines where a null-producing operation is required.
+     *
+     * <p>The function is implemented as a lambda: {@code v -> null}.
+     */
+    NULL(v -> v),
+
+    /**
+     * Converts any value to an empty string representation.
+     *
+     * <p>If the value is {@code null}, returns an empty string; otherwise, converts the value to
+     * its string representation.
+     */
+    EMPTY(v -> Objects.toString(v, ""));
+
+    /**
+     * A function that transforms a string input into a string output.
+     *
+     * <p>This field holds a reference to a specific transformation logic.
+     *
+     * @see Function
+     */
+    private final Function<String, String> handler;
+
+    /**
+     * Creates a NullPolicy instance with the specified function.
+     *
+     * <p>The provided function will be applied to handle null values.
+     *
+     * @param handler the function to be used for null value handling
+     */
+    NullPolicy(Function<String, String> handler) {
+      this.handler = handler;
+    }
+  }
 }

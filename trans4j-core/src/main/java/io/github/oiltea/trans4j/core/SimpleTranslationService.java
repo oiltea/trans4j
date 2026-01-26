@@ -19,6 +19,7 @@ package io.github.oiltea.trans4j.core;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 
 /**
  * A simple implementation of the {@link TranslationService} interface that provides translation
@@ -72,8 +73,9 @@ public class SimpleTranslationService implements TranslationService {
    * @param value the value to be translated using the map associated with the key
    * @return the translated string corresponding to the provided value for the given key
    */
+  @Nullable
   @Override
-  public String translate(@NonNull String key, @NonNull String value) {
+  public String doTranslate(@NonNull String key, @NonNull String value) {
     return cache.computeIfAbsent(key, provider::get).get(value);
   }
 }

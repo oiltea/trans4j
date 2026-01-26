@@ -21,6 +21,7 @@ import io.github.oiltea.trans4j.core.TranslationService;
 import java.time.Duration;
 import java.util.Map;
 import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.StringRedisTemplate;
 
@@ -94,8 +95,9 @@ public class RedisTranslationService implements TranslationService {
    * @return the translated string for the given value, or {@code null} if the translation is not
    *     found after updating the cache from the provider
    */
+  @Nullable
   @Override
-  public String translate(@NonNull String key, @NonNull String value) {
+  public String doTranslate(@NonNull String key, @NonNull String value) {
     String cacheKey = PREFIX + key;
 
     HashOperations<String, String, String> ops = redis.opsForHash();

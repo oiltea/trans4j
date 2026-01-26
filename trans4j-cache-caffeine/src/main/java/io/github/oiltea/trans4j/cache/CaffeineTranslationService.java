@@ -88,7 +88,7 @@ public class CaffeineTranslationService implements TranslationService {
    *     present in the map
    */
   @Override
-  public String translate(@NonNull String key, @NonNull String value) {
+  public String doTranslate(@NonNull String key, @NonNull String value) {
     Map<String, String> map = cache.get(key, provider::get);
     if (map != null) {
       return map.get(value);

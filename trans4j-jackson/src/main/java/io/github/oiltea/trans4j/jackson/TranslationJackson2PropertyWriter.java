@@ -20,9 +20,8 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.BeanPropertyWriter;
 import io.github.oiltea.trans4j.core.Translate;
-import io.github.oiltea.trans4j.core.TranslationFailureHandlers;
 import io.github.oiltea.trans4j.core.TranslationService;
-import io.github.oiltea.trans4j.core.handler.TranslationFailureHandler;
+import java.util.Objects;
 
 /**
  * A custom Jackson property writer that translates property values during JSON serialization.
@@ -103,47 +102,11 @@ public class TranslationJackson2PropertyWriter extends BeanPropertyWriter {
    * @param prov the serializer provider
    * @throws Exception if an error occurs during serialization or translation
    */
+  @Override
   public void serializeAsField(Object bean, JsonGenerator gen, SerializerProvider prov)
       throws Exception {
-    String key = translate.key();
-    Object value = fromWriter.get(bean);
-    String originalValue = value != null ? value.toString() : null;
-
-    if (key != null && value != null) {
-      try {
-        String translated = translationService.translate(key, originalValue);
-        if (translated != null) {
-          gen.writeStringField(getName(), translated);
-        } else {
-          writeFailureValue(gen, key, originalValue);
-        }
-      } catch (Exception e) {
-        writeFailureValue(gen, key, originalValue);
-      }
-    } else {
-      writeFailureValue(gen, key, originalValue);
-    }
-  }
-
-  /**
-   * Writes the appropriate value when translation fails based on the configured failure strategy.
-   *
-   * @param gen the JSON generator to write to
-   * @param key the translation key
-   * @param originalValue the original untranslated value
-   * @throws Exception if an error occurs during writing
-   * @since 1.1.0
-   */
-  private void writeFailureValue(JsonGenerator gen, String key, String originalValue)
-      throws Exception {
-    TranslationFailureHandler handler =
-        TranslationFailureHandlers.getHandler(translate.failureHandler());
-    String fallbackValue = handler.handle(key, originalValue);
-
-    if (fallbackValue != null) {
-      gen.writeStringField(getName(), fallbackValue);
-    } else {
-      gen.writeNullField(getName());
-    }
+    String value = Objects.toString(fromWriter.get(bean), null);
+    String result = translationService.translate(translate.key(), value);
+    gen.writeStringField(getName(), translate.nullPolicy().getHandler().apply(result));
   }
 }
