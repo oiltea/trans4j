@@ -110,10 +110,14 @@ public class TranslationJackson2PropertyWriter extends BeanPropertyWriter {
     String originalValue = value != null ? value.toString() : null;
 
     if (key != null && value != null) {
-      String translated = translationService.translate(key, originalValue);
-      if (translated != null) {
-        gen.writeStringField(getName(), translated);
-      } else {
+      try {
+        String translated = translationService.translate(key, originalValue);
+        if (translated != null) {
+          gen.writeStringField(getName(), translated);
+        } else {
+          writeFailureValue(gen, key, originalValue);
+        }
+      } catch (Exception e) {
         writeFailureValue(gen, key, originalValue);
       }
     } else {
