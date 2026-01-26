@@ -139,8 +139,7 @@ public class TranslationJackson2PropertyWriter extends BeanPropertyWriter {
     TranslationFailureHandler handler =
         TranslationFailureHandlers.getHandler(translate.failureHandler());
     String fallbackValue = handler.handle(key, originalValue);
-
-    if (fallbackValue != null) {
+gen.writeNullField(getName());
       gen.writeStringField(getName(), fallbackValue);
     } else {
       gen.writeFieldName(getName());
