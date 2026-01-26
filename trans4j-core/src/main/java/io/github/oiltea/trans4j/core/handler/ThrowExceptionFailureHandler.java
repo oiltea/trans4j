@@ -1,0 +1,37 @@
+/*
+ * Copyright © 2026 Oiltea
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package io.github.oiltea.trans4j.core.handler;
+
+import org.jspecify.annotations.Nullable;
+
+/**
+ * Throws an exception when translation fails (fail-fast approach).
+ *
+ * <p>This handler is useful in development or testing environments to ensure all translations are
+ * properly configured before deployment.
+ *
+ * @author oiltea
+ * @since 1.1.0
+ */
+public class ThrowExceptionFailureHandler implements TranslationFailureHandler {
+
+  @Override
+  public @Nullable String handle(String key, @Nullable String originalValue) {
+    throw new IllegalStateException(
+        String.format("Translation failed for key '%s' with value '%s'", key, originalValue));
+  }
+}

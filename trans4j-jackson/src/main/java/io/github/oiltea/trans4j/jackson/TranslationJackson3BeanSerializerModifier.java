@@ -39,7 +39,7 @@ import tools.jackson.databind.ser.ValueSerializerModifier;
  * localized strings.
  *
  * @author Oiltea
- * @version 1.0.0
+ * @since 1.0.0
  */
 public class TranslationJackson3BeanSerializerModifier extends ValueSerializerModifier {
 

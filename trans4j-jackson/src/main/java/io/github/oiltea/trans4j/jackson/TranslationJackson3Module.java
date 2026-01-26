@@ -32,7 +32,7 @@ import tools.jackson.databind.module.SimpleModule;
  * registering it with an {@link ObjectMapper} to enable field-level translation during JSON output.
  *
  * @author Oiltea
- * @version 1.0.0
+ * @since 1.0.0
  */
 public class TranslationJackson3Module extends SimpleModule {
 

@@ -34,7 +34,7 @@ import org.springframework.context.annotation.Configuration;
  * underlying {@link TranslationProvider}.
  *
  * @author Oiltea
- * @version 1.0.0
+ * @since 1.0.0
  */
 @Slf4j
 @Configuration(proxyBeanMethods = false)
@@ -51,7 +51,6 @@ public class CaffeineTranslationAutoConfiguration {
    * @param props the properties containing the Caffeine cache specification
    * @return a new instance of CaffeineTranslationService configured with the given provider and
    *     cache spec
-   * @since (version or date if applicable, otherwise omit)
    */
   @Bean
   @ConditionalOnBean(TranslationProvider.class)

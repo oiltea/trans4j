@@ -1,0 +1,264 @@
+/*
+ * Copyright © 2026 Oiltea
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package io.github.oiltea.trans4j.jackson;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.reset;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import io.github.oiltea.trans4j.core.DefaultTranslationService;
+import io.github.oiltea.trans4j.core.TranslationProvider;
+import java.util.Map;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
+
+class TranslationJackson3ModuleTest {
+
+  private ObjectMapper mapper;
+  private TranslationProvider provider;
+
+  @BeforeEach
+  void setUp() {
+    provider = Mockito.mock(TranslationProvider.class);
+    when(provider.get("gender")).thenReturn(Map.of("1", "Male", "2", "Female"));
+    when(provider.get("status")).thenReturn(Map.of("active", "Active", "inactive", "Inactive"));
+    when(provider.get("role")).thenReturn(Map.of("admin", "Administrator", "user", "Regular User"));
+
+    mapper =
+        JsonMapper.builder()
+            .addModule(new TranslationJackson3Module(new DefaultTranslationService(provider)))
+            .build();
+  }
+
+  @Test
+  @DisplayName("Should translate gender field with value '1' to 'Male'")
+  void should_translate_gender_male() {
+    UserDto userDto = new UserDto();
+    userDto.setId(1L);
+    userDto.setGender("1");
+
+    String json = mapper.writeValueAsString(userDto);
+    JsonNode jsonNode = mapper.readTree(json);
+
+    assertEquals("1", jsonNode.get("gender").asString());
+    assertEquals("Male", jsonNode.get("genderText").asString());
+    verify(provider, times(1)).get("gender");
+  }
+
+  @Test
+  @DisplayName("Should translate gender field with value '2' to 'Female'")
+  void should_translate_gender_female() {
+    UserDto userDto = new UserDto();
+    userDto.setId(2L);
+    userDto.setGender("2");
+
+    String json = mapper.writeValueAsString(userDto);
+    JsonNode jsonNode = mapper.readTree(json);
+
+    assertEquals("2", jsonNode.get("gender").asString());
+    assertEquals("Female", jsonNode.get("genderText").asString());
+    verify(provider, times(1)).get("gender");
+  }
+
+  @Test
+  @DisplayName("Should handle null gender value gracefully")
+  void should_handle_null_gender() {
+    UserDto userDto = new UserDto();
+    userDto.setId(3L);
+    userDto.setGender(null);
+
+    String json = mapper.writeValueAsString(userDto);
+    JsonNode jsonNode = mapper.readTree(json);
+
+    assertTrue(jsonNode.get("gender").isNull());
+    assertTrue(jsonNode.get("genderText").isNull());
+  }
+
+  @Test
+  @DisplayName("Should handle unmapped gender value with NULL handler")
+  void should_handle_unmapped_gender_value() {
+    UserDto userDto = new UserDto();
+    userDto.setId(4L);
+    userDto.setGender("3");
+
+    String json = mapper.writeValueAsString(userDto);
+    JsonNode jsonNode = mapper.readTree(json);
+
+    assertEquals("3", jsonNode.get("gender").asString());
+    assertTrue(jsonNode.get("genderText").isNull());
+  }
+
+  @Test
+  @DisplayName("Should serialize all fields correctly")
+  void should_serialize_all_fields() {
+    UserDto userDto = new UserDto();
+    userDto.setId(5L);
+    userDto.setGender("1");
+
+    String json = mapper.writeValueAsString(userDto);
+    JsonNode jsonNode = mapper.readTree(json);
+
+    assertNotNull(jsonNode.get("id"));
+    assertEquals(5L, jsonNode.get("id").asLong());
+    assertNotNull(jsonNode.get("gender"));
+    assertNotNull(jsonNode.get("genderText"));
+  }
+
+  @Test
+  @DisplayName("Should not call provider when gender is null")
+  void should_not_call_provider_for_null_value() {
+    reset(provider);
+    when(provider.get("gender")).thenReturn(Map.of("1", "Male", "2", "Female"));
+
+    UserDto userDto = new UserDto();
+    userDto.setId(6L);
+    userDto.setGender(null);
+
+    mapper.writeValueAsString(userDto);
+
+    verify(provider, never()).get(anyString());
+  }
+
+  @Test
+  @DisplayName("Should return empty string on failure with EMPTY_STRING handler")
+  void should_return_empty_string_on_failure() {
+    UserDto userDto = new UserDto();
+    userDto.setId(7L);
+    userDto.setStatus("unknown");
+
+    String json = mapper.writeValueAsString(userDto);
+    JsonNode jsonNode = mapper.readTree(json);
+
+    assertEquals("unknown", jsonNode.get("status").asString());
+    assertEquals("", jsonNode.get("statusText").asString());
+  }
+
+  @Test
+  @DisplayName("Should translate successfully with EMPTY_STRING handler")
+  void should_translate_with_empty_string_handler() {
+    UserDto userDto = new UserDto();
+    userDto.setId(8L);
+    userDto.setStatus("active");
+
+    String json = mapper.writeValueAsString(userDto);
+    JsonNode jsonNode = mapper.readTree(json);
+
+    assertEquals("active", jsonNode.get("status").asString());
+    assertEquals("Active", jsonNode.get("statusText").asString());
+  }
+
+  @Test
+  @DisplayName("Should handle null with EMPTY_STRING handler")
+  void should_handle_null_with_empty_string_handler() {
+    UserDto userDto = new UserDto();
+    userDto.setId(9L);
+    userDto.setStatus(null);
+
+    String json = mapper.writeValueAsString(userDto);
+    JsonNode jsonNode = mapper.readTree(json);
+
+    assertTrue(jsonNode.get("status").isNull());
+    assertEquals("", jsonNode.get("statusText").asString());
+  }
+
+  @Test
+  @DisplayName("Should return original value on failure with ORIGINAL_VALUE handler")
+  void should_return_original_value_on_failure() {
+    UserDto userDto = new UserDto();
+    userDto.setId(10L);
+    userDto.setRole("superadmin");
+
+    String json = mapper.writeValueAsString(userDto);
+    JsonNode jsonNode = mapper.readTree(json);
+
+    assertEquals("superadmin", jsonNode.get("role").asString());
+    assertEquals("superadmin", jsonNode.get("roleText").asString());
+  }
+
+  @Test
+  @DisplayName("Should translate successfully with ORIGINAL_VALUE handler")
+  void should_translate_with_original_value_handler() {
+    UserDto userDto = new UserDto();
+    userDto.setId(11L);
+    userDto.setRole("admin");
+
+    String json = mapper.writeValueAsString(userDto);
+    JsonNode jsonNode = mapper.readTree(json);
+
+    assertEquals("admin", jsonNode.get("role").asString());
+    assertEquals("Administrator", jsonNode.get("roleText").asString());
+  }
+
+  @Test
+  @DisplayName("Should handle null with ORIGINAL_VALUE handler")
+  void should_handle_null_with_original_value_handler() {
+    UserDto userDto = new UserDto();
+    userDto.setId(16L);
+    userDto.setRole(null);
+
+    String json = mapper.writeValueAsString(userDto);
+    JsonNode jsonNode = mapper.readTree(json);
+
+    assertTrue(jsonNode.get("role").isNull());
+    assertEquals("", jsonNode.get("roleText").asString());
+  }
+
+  @Test
+  @DisplayName("Should handle multiple translations in single object")
+  void should_handle_multiple_translations() {
+    UserDto userDto = new UserDto();
+    userDto.setId(12L);
+    userDto.setGender("1");
+    userDto.setStatus("active");
+    userDto.setRole("admin");
+
+    String json = mapper.writeValueAsString(userDto);
+    JsonNode jsonNode = mapper.readTree(json);
+
+    assertEquals("Male", jsonNode.get("genderText").asString());
+    assertEquals("Active", jsonNode.get("statusText").asString());
+    assertEquals("Administrator", jsonNode.get("roleText").asString());
+  }
+
+  @Test
+  @DisplayName("Should handle mixed success and failure translations")
+  void should_handle_mixed_translations() {
+    UserDto userDto = new UserDto();
+    userDto.setId(13L);
+    userDto.setGender("1");
+    userDto.setStatus("unknown");
+    userDto.setRole("superadmin");
+
+    String json = mapper.writeValueAsString(userDto);
+    JsonNode jsonNode = mapper.readTree(json);
+
+    assertEquals("Male", jsonNode.get("genderText").asString());
+    assertEquals("", jsonNode.get("statusText").asString());
+    assertEquals("superadmin", jsonNode.get("roleText").asString());
+  }
+}

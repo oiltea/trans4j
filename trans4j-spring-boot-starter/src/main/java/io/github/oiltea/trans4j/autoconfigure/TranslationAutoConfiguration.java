@@ -43,7 +43,7 @@ import org.springframework.context.annotation.Configuration;
  * service) and "simple" for simple in-memory caching (default if no cache type is specified).
  *
  * @author Oiltea
- * @version 1.0.0
+ * @since 1.0.0
  */
 @Slf4j
 @Configuration(proxyBeanMethods = false)
@@ -97,7 +97,7 @@ public class TranslationAutoConfiguration {
    * during JSON serialization/deserialization.
    *
    * @author Oiltea
-   * @version 1.0.0
+   * @since 1.0.0
    */
   @Slf4j
   @Configuration(proxyBeanMethods = false)
@@ -128,7 +128,7 @@ public class TranslationAutoConfiguration {
    * during JSON serialization/deserialization.
    *
    * @author Oiltea
-   * @version 1.0.0
+   * @since 1.0.0
    */
   @Slf4j
   @Configuration(proxyBeanMethods = false)

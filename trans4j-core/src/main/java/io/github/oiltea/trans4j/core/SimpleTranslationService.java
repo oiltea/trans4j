@@ -30,7 +30,7 @@ import org.jspecify.annotations.NonNull;
  * which are lazily loaded from the provider upon the first request.
  *
  * @author Oiltea
- * @version 1.0.0
+ * @since 1.0.0
  */
 public class SimpleTranslationService implements TranslationService {
 

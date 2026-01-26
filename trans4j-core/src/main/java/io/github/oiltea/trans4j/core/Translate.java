@@ -16,6 +16,8 @@
 
 package io.github.oiltea.trans4j.core;
 
+import io.github.oiltea.trans4j.core.handler.NullFailureHandler;
+import io.github.oiltea.trans4j.core.handler.TranslationFailureHandler;
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -51,4 +53,13 @@ public @interface Translate {
    * @return the source field name
    */
   String from();
+
+  /**
+   * The failure handler class to use when translation fails.
+   *
+   * <p>Defaults to {@link NullFailureHandler} which returns null on failure.
+   *
+   * @return the failure handler class
+   */
+  Class<? extends TranslationFailureHandler> failureHandler() default NullFailureHandler.class;
 }

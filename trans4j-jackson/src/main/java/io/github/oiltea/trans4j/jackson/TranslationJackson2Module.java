@@ -32,7 +32,7 @@ import io.github.oiltea.trans4j.core.TranslationService;
  * on-the-fly translation of specific fields in serialized JSON responses.
  *
  * @author Oiltea
- * @version 1.0.0
+ * @since 1.0.0
  */
 public class TranslationJackson2Module extends SimpleModule {
 

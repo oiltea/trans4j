@@ -26,7 +26,7 @@ import org.jspecify.annotations.NonNull;
  * localized values based on the provided locale or context.
  *
  * @author Oiltea
- * @version 1.0.0
+ * @since 1.0.0
  */
 public class DefaultTranslationService implements TranslationService {
 

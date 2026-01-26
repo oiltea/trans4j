@@ -37,7 +37,7 @@ import org.springframework.data.redis.core.StringRedisTemplate;
  * entry.
  *
  * @author Oiltea
- * @version 1.0.0
+ * @since 1.0.0
  */
 public class RedisTranslationService implements TranslationService {
 
