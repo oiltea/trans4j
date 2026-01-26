@@ -28,6 +28,6 @@ public class OriginalValueFailureHandler implements TranslationFailureHandler {
 
   @Override
   public @Nullable String handle(String key, @Nullable String originalValue) {
-    return originalValue != null ? originalValue : "";
+    return originalValue;
   }
 }
