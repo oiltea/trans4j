@@ -21,7 +21,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import io.github.oiltea.trans4j.core.handler.EmptyStringFailureHandler;
 import io.github.oiltea.trans4j.core.handler.NullFailureHandler;
 import io.github.oiltea.trans4j.core.handler.OriginalValueFailureHandler;
-import io.github.oiltea.trans4j.core.handler.ThrowExceptionFailureHandler;
 import io.github.oiltea.trans4j.core.handler.TranslationFailureHandler;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -54,16 +53,6 @@ class TranslationFailureHandlerTest {
   void original_value_handler_should_handle_null() {
     TranslationFailureHandler handler = new OriginalValueFailureHandler();
     assertEquals("", handler.handle("key", null));
-  }
-
-  @Test
-  @DisplayName("ThrowExceptionFailureHandler should throw exception")
-  void throw_exception_handler_should_throw_exception() {
-    TranslationFailureHandler handler = new ThrowExceptionFailureHandler();
-    IllegalStateException exception =
-        assertThrows(IllegalStateException.class, () -> handler.handle("gender", "1"));
-    assertTrue(exception.getMessage().contains("gender"));
-    assertTrue(exception.getMessage().contains("1"));
   }
 
   @Test

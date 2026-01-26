@@ -29,8 +29,6 @@
  *       string
  *   <li>{@link io.github.oiltea.trans4j.core.handler.OriginalValueFailureHandler} - Returns
  *       original value
- *   <li>{@link io.github.oiltea.trans4j.core.handler.ThrowExceptionFailureHandler} - Throws
- *       exception
  * </ul>
  *
  * <h2>Custom Handlers</h2>
