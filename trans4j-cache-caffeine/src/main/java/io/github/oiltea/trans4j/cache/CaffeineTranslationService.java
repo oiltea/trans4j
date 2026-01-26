@@ -33,7 +33,7 @@ import org.jspecify.annotations.NonNull;
  * capabilities with automatic caching.
  *
  * @author Oiltea
- * @version 1.0.0
+ * @since 1.0.0
  */
 public class CaffeineTranslationService implements TranslationService {
 

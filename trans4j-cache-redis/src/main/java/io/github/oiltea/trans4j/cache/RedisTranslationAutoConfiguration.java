@@ -38,7 +38,7 @@ import org.springframework.data.redis.core.StringRedisTemplate;
  * to the underlying translation provider.
  *
  * @author Oiltea
- * @version 1.0.0
+ * @since 1.0.0
  */
 @Slf4j
 @Configuration(proxyBeanMethods = false)
@@ -56,7 +56,6 @@ public class RedisTranslationAutoConfiguration {
    * @param connectionFactory the {@link RedisConnectionFactory} to be used by the template for
    *     creating connections
    * @return a fully configured {@link StringRedisTemplate} instance
-   * @since (version or date if applicable, otherwise omit)
    */
   @Bean
   @ConditionalOnMissingBean(StringRedisTemplate.class)
@@ -74,7 +73,6 @@ public class RedisTranslationAutoConfiguration {
    * @param stringRedisTemplate the Redis template for cache operations
    * @param props configuration properties for the translation cache
    * @return a configured {@link TranslationService} implementation that uses Redis for caching
-   * @since (version or date if applicable)
    */
   @Bean
   @ConditionalOnBean(TranslationProvider.class)

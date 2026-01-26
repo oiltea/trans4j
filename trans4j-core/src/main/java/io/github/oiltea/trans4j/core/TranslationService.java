@@ -27,7 +27,7 @@ import org.jspecify.annotations.Nullable;
  * external APIs, databases, or internal mapping.
  *
  * @author oiltea
- * @version 1.0.0
+ * @since 1.0.0
  */
 public interface TranslationService {
 

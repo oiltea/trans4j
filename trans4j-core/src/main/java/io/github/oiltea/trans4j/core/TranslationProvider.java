@@ -27,7 +27,7 @@ import org.jspecify.annotations.NonNull;
  * support internationalization (i18n) by allowing dynamic lookup of translated text.
  *
  * @author oiltea
- * @version 1.0.0
+ * @since 1.0.0
  */
 public interface TranslationProvider {
 

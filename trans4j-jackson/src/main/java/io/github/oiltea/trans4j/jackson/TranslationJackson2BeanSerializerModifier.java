@@ -40,7 +40,7 @@ import java.util.stream.Collectors;
  * values from a source field (specified by {@link Translate#from()}) to the target property.
  *
  * @author Oiltea
- * @version 1.0.0
+ * @since 1.0.0
  */
 public class TranslationJackson2BeanSerializerModifier extends BeanSerializerModifier {
 
