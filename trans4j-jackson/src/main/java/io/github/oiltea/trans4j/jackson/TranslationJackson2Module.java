@@ -24,9 +24,8 @@ import io.github.oiltea.trans4j.core.TranslationService;
  * Jackson 2 module for integrating translation functionality into JSON serialization.
  *
  * <p>This module extends {@link SimpleModule} to provide automatic translation of field values
- * during JSON serialization. It registers a custom {@link
- * TranslationJackson2BeanSerializerModifier} that intercepts the serialization process and applies
- * translation logic to annotated fields.
+ * during JSON serialization. It registers a custom {@link Jackson2BeanSerializerModifier} that
+ * intercepts the serialization process and applies translation logic to annotated fields.
  *
  * <p>Typical usage involves adding this module to an {@link ObjectMapper} instance to enable
  * on-the-fly translation of specific fields in serialized JSON responses.
@@ -36,40 +35,15 @@ import io.github.oiltea.trans4j.core.TranslationService;
  */
 public class TranslationJackson2Module extends SimpleModule {
 
-  /**
-   * The translation service used for text translation operations.
-   *
-   * <p>This service provides methods to translate text between different languages.
-   *
-   * @see TranslationService
-   */
   private final TranslationService translationService;
 
-  /**
-   * Constructs a new TranslationJackson2Module with the specified translation service. This module
-   * is used to integrate translation functionality with Jackson JSON processing.
-   *
-   * @param translationService the translation service to be used for text translation
-   */
   public TranslationJackson2Module(TranslationService translationService) {
     this.translationService = translationService;
   }
 
-  /**
-   * Configures the Jackson module by adding a custom bean serializer modifier for translation
-   * support.
-   *
-   * <p>This method registers a {@link TranslationJackson2BeanSerializerModifier} with the provided
-   * {@link TranslationService} to the setup context, then delegates to the superclass
-   * implementation.
-   *
-   * @param context the setup context used to configure the Jackson module
-   * @see com.fasterxml.jackson.databind.Module#setupModule(SetupContext)
-   */
   @Override
   public void setupModule(SetupContext context) {
-    context.addBeanSerializerModifier(
-        new TranslationJackson2BeanSerializerModifier(translationService));
+    context.addBeanSerializerModifier(new Jackson2BeanSerializerModifier(translationService));
     super.setupModule(context);
   }
 }

@@ -31,12 +31,6 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 /**
  * Redis-based translation auto-configuration class.
  *
- * <p>This class provides auto-configuration for translation services using Redis as the cache
- * backend. It is conditionally loaded when the property `trans4j.cache.type` is set to `redis`. The
- * configuration creates a {@link StringRedisTemplate} bean and a {@link TranslationService} bean
- * that uses Redis for caching translation results, improving performance by reducing repeated calls
- * to the underlying translation provider.
- *
  * @author Oiltea
  * @since 1.0.0
  */
@@ -45,35 +39,14 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 @ConditionalOnProperty(prefix = "trans4j.cache", name = "type", havingValue = "redis")
 public class RedisTranslationAutoConfiguration {
 
-  /**
-   * Creates and configures a {@link StringRedisTemplate} bean.
-   *
-   * <p>This method provides a {@link StringRedisTemplate} instance configured with the specified
-   * {@link RedisConnectionFactory}. The {@link StringRedisTemplate} is a specialized {@link
-   * org.springframework.data.redis.core.RedisTemplate} for common usage when keys and values are
-   * {@link String}s.
-   *
-   * @param connectionFactory the {@link RedisConnectionFactory} to be used by the template for
-   *     creating connections
-   * @return a fully configured {@link StringRedisTemplate} instance
-   */
   @Bean
   @ConditionalOnMissingBean(StringRedisTemplate.class)
   @ConditionalOnBean(RedisConnectionFactory.class)
   StringRedisTemplate stringRedisTemplate(RedisConnectionFactory connectionFactory) {
+    log.debug("Register StringRedisTemplate for RedisTranslationService");
     return new StringRedisTemplate(connectionFactory);
   }
 
-  /**
-   * Creates a Redis-based translation service bean when a {@link TranslationProvider} bean is
-   * available. This service caches translation results in Redis to improve performance and reduce
-   * external API calls.
-   *
-   * @param provider the translation provider used for actual translation operations
-   * @param stringRedisTemplate the Redis template for cache operations
-   * @param props configuration properties for the translation cache
-   * @return a configured {@link TranslationService} implementation that uses Redis for caching
-   */
   @Bean
   @ConditionalOnBean(TranslationProvider.class)
   TranslationService redisTranslationService(

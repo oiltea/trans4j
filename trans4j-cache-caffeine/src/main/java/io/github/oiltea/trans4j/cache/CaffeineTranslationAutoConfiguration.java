@@ -26,12 +26,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * Auto-configuration class for Caffeine-based translation caching.
- *
- * <p>This configuration is activated when the property {@code trans4j.cache.type} is set to
- * "caffeine". It provides a {@link TranslationService} bean that uses Caffeine as the underlying
- * cache implementation for caching translation data, improving performance by reducing calls to the
- * underlying {@link TranslationProvider}.
+ * Caffeine-based translation auto-configuration class.
  *
  * @author Oiltea
  * @since 1.0.0
@@ -41,17 +36,6 @@ import org.springframework.context.annotation.Configuration;
 @ConditionalOnProperty(prefix = "trans4j.cache", name = "type", havingValue = "caffeine")
 public class CaffeineTranslationAutoConfiguration {
 
-  /**
-   * Creates a TranslationService bean using Caffeine cache implementation. This bean is only
-   * created if a TranslationProvider bean is available in the application context. The service
-   * wraps the provided TranslationProvider with a caching layer configured according to the given
-   * Caffeine specification from the properties.
-   *
-   * @param provider the underlying translation provider to be cached
-   * @param props the properties containing the Caffeine cache specification
-   * @return a new instance of CaffeineTranslationService configured with the given provider and
-   *     cache spec
-   */
   @Bean
   @ConditionalOnBean(TranslationProvider.class)
   TranslationService caffeineTranslationService(

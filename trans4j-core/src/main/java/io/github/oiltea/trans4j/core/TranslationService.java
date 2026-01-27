@@ -22,8 +22,7 @@ import org.jspecify.annotations.NonNull;
  * Interface for translation services.
  *
  * <p>Provides a contract for translating text based on a key and an original value. Implementations
- * of this interface are responsible for defining the specific translation logic, which may involve
- * external APIs, databases, or internal mapping.
+ * of this interface are responsible for defining the specific translation logic.
  *
  * @author oiltea
  * @since 1.0.0

@@ -26,81 +26,33 @@ import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.StringRedisTemplate;
 
 /**
- * Redis-based implementation of the {@link TranslationService} interface.
- *
- * <p>This service provides translation functionality with Redis caching support. It caches
- * translation mappings in Redis hashes to improve performance and reduce calls to the underlying
- * translation provider. Each translation key is prefixed with "trans4j:" to avoid collisions in the
- * Redis namespace.
- *
- * <p>The service automatically fetches translations from the provider when a cache miss occurs,
- * stores the entire mapping for the given key in Redis, and sets a time-to-live (TTL) for the cache
- * entry.
+ * Redis-based translation service implementation that provides caching functionality for
+ * translations.
  *
  * @author Oiltea
  * @since 1.0.0
  */
 public class RedisTranslationService implements TranslationService {
 
-  /**
-   * The prefix used for keys in the translation cache.
-   *
-   * <p>This constant is prepended to cache keys to create a namespace and avoid collisions with
-   * other cached data.
-   */
   private static final String PREFIX = "trans4j:";
 
-  /** The translation provider used for performing text translations. */
   private final TranslationProvider provider;
-
-  /**
-   * Redis template for String operations.
-   *
-   * <p>Used for performing Redis operations with String values.
-   *
-   * @see StringRedisTemplate
-   */
-  private final StringRedisTemplate redis;
-
-  /**
-   * The time-to-live duration for the cached data.
-   *
-   * <p>Specifies how long the cached data remains valid before it expires.
-   */
+  private final StringRedisTemplate redisTemplate;
   private final Duration ttl;
 
-  /**
-   * Constructs a new RedisTranslationService with the specified dependencies. This service provides
-   * translation functionality with Redis caching support.
-   *
-   * @param provider the translation provider used for actual translation operations
-   * @param redis the Redis template for caching translated content
-   * @param ttl the time-to-live duration for cached entries in Redis
-   */
   public RedisTranslationService(
-      TranslationProvider provider, StringRedisTemplate redis, Duration ttl) {
+      TranslationProvider provider, StringRedisTemplate redisTemplate, Duration ttl) {
     this.provider = provider;
-    this.redis = redis;
+    this.redisTemplate = redisTemplate;
     this.ttl = ttl;
   }
 
-  /**
-   * Translates a value using the specified key by first checking the Redis cache. If the
-   * translation is not found in the cache, it retrieves all translations for the key from the
-   * provider, stores them in the cache with a TTL, and then returns the translation for the given
-   * value. The cache key is constructed by prefixing the provided key.
-   *
-   * @param key the translation key used to identify the set of translations, must not be null
-   * @param value the specific value to translate within the key's translation set, must not be null
-   * @return the translated string for the given value, or {@code null} if the translation is not
-   *     found after updating the cache from the provider
-   */
   @Nullable
   @Override
   public String doTranslate(@NonNull String key, @NonNull String value) {
     String cacheKey = PREFIX + key;
 
-    HashOperations<String, String, String> ops = redis.opsForHash();
+    HashOperations<String, String, String> ops = redisTemplate.opsForHash();
 
     String val = ops.get(cacheKey, value);
     if (val != null) {
@@ -108,8 +60,11 @@ public class RedisTranslationService implements TranslationService {
     }
 
     Map<String, String> map = provider.get(key);
+    if (map == null) {
+      return null;
+    }
     ops.putAll(cacheKey, map);
-    redis.expire(cacheKey, ttl);
+    redisTemplate.expire(cacheKey, ttl);
 
     return map.get(value);
   }

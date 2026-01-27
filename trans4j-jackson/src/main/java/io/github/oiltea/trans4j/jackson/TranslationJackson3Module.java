@@ -24,9 +24,8 @@ import tools.jackson.databind.module.SimpleModule;
  * Jackson 3 module for integrating translation functionality into JSON serialization.
  *
  * <p>This module extends {@link SimpleModule} to add translation support during serialization by
- * registering a custom {@link TranslationJackson3BeanSerializerModifier}. It is designed to
- * automatically translate specific fields in objects based on the provided {@link
- * TranslationService}.
+ * registering a custom {@link Jackson3BeanSerializerModifier}. It is designed to automatically
+ * translate specific fields in objects based on the provided {@link TranslationService}.
  *
  * <p>Typical usage involves constructing the module with a translation service instance and
  * registering it with an {@link ObjectMapper} to enable field-level translation during JSON output.
@@ -36,39 +35,15 @@ import tools.jackson.databind.module.SimpleModule;
  */
 public class TranslationJackson3Module extends SimpleModule {
 
-  /**
-   * The translation service used for text translation operations.
-   *
-   * <p>This service provides methods to translate text between different languages.
-   *
-   * @see TranslationService
-   */
   private final TranslationService translationService;
 
-  /**
-   * Constructs a new TranslationJackson3Module with the specified translation service. This module
-   * is designed to integrate translation functionality with Jackson 3.x JSON processing.
-   *
-   * @param translationService the translation service to be used by this module
-   */
   public TranslationJackson3Module(TranslationService translationService) {
     this.translationService = translationService;
   }
 
-  /**
-   * Configures the Jackson module by adding a custom serializer modifier for translation support.
-   *
-   * <p>This method registers a {@code TranslationJackson3BeanSerializerModifier} with the provided
-   * {@code SetupContext} to enable translation capabilities during JSON serialization. It then
-   * delegates to the superclass implementation to complete the module setup.
-   *
-   * @param context the setup context used to configure the Jackson module
-   * @see SimpleModule#setupModule(SetupContext)
-   */
   @Override
   public void setupModule(SetupContext context) {
-    context.addSerializerModifier(
-        new TranslationJackson3BeanSerializerModifier(translationService));
+    context.addSerializerModifier(new Jackson3BeanSerializerModifier(translationService));
     super.setupModule(context);
   }
 }

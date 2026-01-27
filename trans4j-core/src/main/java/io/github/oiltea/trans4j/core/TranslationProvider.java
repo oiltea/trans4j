@@ -20,11 +20,9 @@ import java.util.Map;
 import org.jspecify.annotations.NonNull;
 
 /**
- * Interface for translation providers that retrieve localized strings based on a given key.
+ * Translation data source provider interface
  *
- * <p>Implementations of this interface are responsible for providing translation mappings,
- * typically from a resource bundle, database, or external service. The primary use case is to
- * support internationalization (i18n) by allowing dynamic lookup of translated text.
+ * <p>Provide basic data needed for translation
  *
  * @author oiltea
  * @since 1.0.0
