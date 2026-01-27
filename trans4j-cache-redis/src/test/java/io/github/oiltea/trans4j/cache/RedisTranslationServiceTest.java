@@ -73,9 +73,9 @@ class RedisTranslationServiceTest {
   }
 
   @Test
-  void should_return_null_when_provider_returns_empty() {
+  void should_return_null_when_provider_returns_null() {
     Mockito.when(ops.get("trans4j:gender", "1")).thenReturn(null);
-    Mockito.when(provider.get("gender")).thenReturn(Map.of());
+    Mockito.when(provider.get("gender")).thenReturn(null);
 
     String result = service.translate("gender", "1");
 

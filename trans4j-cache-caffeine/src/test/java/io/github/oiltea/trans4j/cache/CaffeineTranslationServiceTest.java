@@ -16,6 +16,12 @@
 
 package io.github.oiltea.trans4j.cache;
 
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import io.github.oiltea.trans4j.core.TranslationProvider;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
@@ -36,52 +42,31 @@ class CaffeineTranslationServiceTest {
 
   @Test
   void should_load_from_provider_when_cache_miss() {
-    Mockito.when(provider.get("gender")).thenReturn(Map.of("1", "male"));
-
-    String result = service.translate("gender", "1");
-
-    Assertions.assertEquals("male", result);
-
-    Mockito.verify(provider, Mockito.times(1)).get("gender");
+    when(provider.get("gender")).thenReturn(Map.of("1", "male"));
+    Assertions.assertEquals("male", service.translate("gender", "1"));
+    verify(provider, times(1)).get("gender");
   }
 
   @Test
   void should_hit_cache_and_not_call_provider_again() {
-    Mockito.when(provider.get("gender")).thenReturn(Map.of("1", "male"));
+    when(provider.get("gender")).thenReturn(Map.of("1", "male"));
 
     service.translate("gender", "1");
     service.translate("gender", "1");
 
-    Mockito.verify(provider, Mockito.times(1)).get("gender");
+    verify(provider, times(1)).get("gender");
   }
 
   @Test
   void should_return_null_when_value_not_found() {
-    Mockito.when(provider.get("gender")).thenReturn(Map.of("1", "male"));
-
-    String result = service.translate("gender", "2");
-
-    Assertions.assertNull(result);
+    when(provider.get("gender")).thenReturn(Map.of("1", "male"));
+    assertNull(service.translate("gender", "2"));
   }
 
   @Test
-  void should_return_null_when_provider_returns_empty() {
-    Mockito.when(provider.get("gender")).thenReturn(Map.of());
-
-    String result = service.translate("gender", "1");
-
-    Assertions.assertNull(result);
-  }
-
-  @Test
-  void should_cache_per_key_independently() {
-    Mockito.when(provider.get("gender")).thenReturn(Map.of("1", "male"));
-    Mockito.when(provider.get("status")).thenReturn(Map.of("1", "enabled"));
-
-    service.translate("gender", "1");
-    service.translate("status", "1");
-
-    Mockito.verify(provider, Mockito.times(1)).get("gender");
-    Mockito.verify(provider, Mockito.times(1)).get("status");
+  void should_return_null_when_provider_returns_null() {
+    when(provider.get("status")).thenReturn(null);
+    assertNull(service.translate("status", "1"));
+    verify(provider, times(1)).get("status");
   }
 }

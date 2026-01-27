@@ -32,8 +32,8 @@ public interface TranslationProvider {
   /**
    * Retrieves the value associated with the specified key from the map.
    *
-   * @param key the key whose associated value is to be returned
-   * @return the value to which the specified key is mapped
+   * @param key the key whose associated value is to be returned, must not be null
+   * @return the value to which the specified key is mapped, must not be null
    */
   Map<String, String> get(@NonNull String key);
 }
