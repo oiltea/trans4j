@@ -20,7 +20,7 @@ import java.util.Map;
 import org.jspecify.annotations.NonNull;
 
 /**
- * Translation data source provider interface
+ * Translation data source provider interface.
  *
  * <p>Provide basic data needed for translation
  *
