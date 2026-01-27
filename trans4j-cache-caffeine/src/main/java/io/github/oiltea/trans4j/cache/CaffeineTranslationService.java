@@ -21,7 +21,6 @@ import com.github.benmanes.caffeine.cache.Caffeine;
 import io.github.oiltea.trans4j.core.TranslationProvider;
 import io.github.oiltea.trans4j.core.TranslationService;
 import java.util.Map;
-import java.util.Optional;
 import org.jspecify.annotations.NonNull;
 
 /**
