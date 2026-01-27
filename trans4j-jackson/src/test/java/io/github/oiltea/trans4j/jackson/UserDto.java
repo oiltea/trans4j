@@ -17,26 +17,19 @@
 package io.github.oiltea.trans4j.jackson;
 
 import io.github.oiltea.trans4j.core.Translate;
-import io.github.oiltea.trans4j.core.handler.*;
+import io.github.oiltea.trans4j.core.Translate.NullPolicy;
 import lombok.Data;
 
 @Data
 public class UserDto {
 
-  private Long id;
-
   private String gender;
 
-  @Translate(key = "gender", from = "gender")
+  @Translate(key = "gender", from = "gender", nullPolicy = NullPolicy.NULL)
   private String genderText;
 
   private String status;
 
-  @Translate(key = "status", from = "status", failureHandler = EmptyStringFailureHandler.class)
+  @Translate(key = "status", from = "status", nullPolicy = NullPolicy.EMPTY)
   private String statusText;
-
-  private String role;
-
-  @Translate(key = "role", from = "role", failureHandler = OriginalValueFailureHandler.class)
-  private String roleText;
 }

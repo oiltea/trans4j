@@ -20,11 +20,9 @@ import java.util.Map;
 import org.jspecify.annotations.NonNull;
 
 /**
- * Interface for translation providers that retrieve localized strings based on a given key.
+ * Translation data source provider interface.
  *
- * <p>Implementations of this interface are responsible for providing translation mappings,
- * typically from a resource bundle, database, or external service. The primary use case is to
- * support internationalization (i18n) by allowing dynamic lookup of translated text.
+ * <p>Provide basic data needed for translation
  *
  * @author oiltea
  * @since 1.0.0
@@ -32,10 +30,10 @@ import org.jspecify.annotations.NonNull;
 public interface TranslationProvider {
 
   /**
-   * Retrieves the value associated with the specified key from the map. The key must not be null.
+   * Retrieves the value associated with the specified key from the map.
    *
    * @param key the key whose associated value is to be returned, must not be null
-   * @return the value to which the specified key is mapped, guaranteed to be non-null
+   * @return the value to which the specified key is mapped, must not be null
    */
-  @NonNull Map<String, String> get(@NonNull String key);
+  Map<String, String> get(@NonNull String key);
 }

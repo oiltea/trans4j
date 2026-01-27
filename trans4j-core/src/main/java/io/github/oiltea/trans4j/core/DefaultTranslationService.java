@@ -16,51 +16,31 @@
 
 package io.github.oiltea.trans4j.core;
 
+import java.util.Map;
 import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 
 /**
- * Default implementation of the TranslationService interface.
- *
- * <p>This class provides translation functionality by delegating to a configured
- * TranslationProvider. It serves as a concrete service that can be used to translate keys into
- * localized values based on the provided locale or context.
+ * Default implementation of the {@link TranslationService} interface.
  *
  * @author Oiltea
  * @since 1.0.0
  */
 public class DefaultTranslationService implements TranslationService {
 
-  /**
-   * The translation provider used for text translation operations.
-   *
-   * <p>This provider handles the actual translation logic and may support multiple translation
-   * services.
-   *
-   * @see TranslationProvider
-   */
   private final TranslationProvider provider;
 
-  /**
-   * Constructs a new DefaultTranslationService with the specified translation provider.
-   *
-   * @param provider the translation provider to be used by this service
-   */
   public DefaultTranslationService(TranslationProvider provider) {
     this.provider = provider;
   }
 
-  /**
-   * Translates a key-value pair using the provider.
-   *
-   * <p>This method retrieves the translation for the given key and value from the provider. The key
-   * and value must not be null.
-   *
-   * @param key the translation key, must not be null
-   * @param value the value to be translated, must not be null
-   * @return the translated string for the given key and value
-   */
+  @Nullable
   @Override
-  public String translate(@NonNull String key, @NonNull String value) {
-    return provider.get(key).get(value);
+  public String doTranslate(@NonNull String key, @NonNull String value) {
+    Map<String, String> map = provider.get(key);
+    if (map == null) {
+      return null;
+    }
+    return map.get(value);
   }
 }
