@@ -40,6 +40,15 @@ public class RedisTranslationService implements TranslationService {
   private final StringRedisTemplate redisTemplate;
   private final Duration ttl;
 
+  /**
+   * Constructs a RedisTranslationService with the specified translation provider, Redis template,
+   * and TTL duration. This service uses Redis as a cache layer for translation results to improve
+   * performance.
+   *
+   * @param provider the translation provider used to fetch translations when not cached
+   * @param redisTemplate the Redis template for cache operations
+   * @param ttl the time-to-live duration for cached translations
+   */
   public RedisTranslationService(
       TranslationProvider provider, StringRedisTemplate redisTemplate, Duration ttl) {
     this.provider = provider;

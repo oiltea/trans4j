@@ -36,6 +36,18 @@ public class CaffeineTranslationService implements TranslationService {
 
   private final Cache<String, Map<String, String>> cache;
 
+  /**
+   * Creates a new CaffeineTranslationService with the specified translation provider and cache
+   * specification.
+   *
+   * <p>This constructor initializes the service with a translation provider and builds a Caffeine
+   * cache using the provided cache specification string. The cache specification string should
+   * follow the format defined by Caffeine's specification parser.
+   *
+   * @param provider the translation provider to be used for translation operations
+   * @param spec the cache specification string used to configure the Caffeine cache
+   * @see com.github.benmanes.caffeine.cache.Caffeine#from(String)
+   */
   public CaffeineTranslationService(TranslationProvider provider, String spec) {
     this.provider = provider;
     this.cache = Caffeine.from(spec).build();
