@@ -49,32 +49,51 @@ class TranslationJackson2ModuleTest {
   }
 
   @Test
-  @DisplayName("Should translate gender '1' to 'Male' using NULL policy for genderText")
-  void should_translate_gender_male() throws Exception {
+  @DisplayName("genderText -> Male, statusText -> Inactive")
+  void normal_translate() throws Exception {
     UserDto userDto = new UserDto();
     userDto.setGender("1");
+    userDto.setStatus("2");
 
     String json = mapper.writeValueAsString(userDto);
     JsonNode jsonNode = mapper.readTree(json);
 
-    assertEquals("1", jsonNode.get("gender").asText());
     assertEquals("Male", jsonNode.get("genderText").asText());
+    assertEquals("Inactive", jsonNode.get("statusText").asText());
     verify(provider, times(1)).get("gender");
+    verify(provider, times(1)).get("status");
   }
 
   @Test
-  @DisplayName("Should handle null source value: genderText -> null, statusText -> empty")
-  void should_handle_null_source_value_by_policy() throws Exception {
+  @DisplayName("genderText -> null, statusText -> empty")
+  void should_handle_null_policy() throws Exception {
     UserDto userDto = new UserDto();
 
     String json = mapper.writeValueAsString(userDto);
     JsonNode jsonNode = mapper.readTree(json);
 
-    assertTrue(jsonNode.get("gender").isNull());
     assertTrue(jsonNode.get("genderText").isNull());
-    assertTrue(jsonNode.get("status").isNull());
     assertEquals("", jsonNode.get("statusText").asText());
 
     verify(provider, never()).get(anyString());
+  }
+
+  @Test
+  @DisplayName("genderText -> null, statusText -> empty")
+  void should_handle_null_policy_when_provider_return_null() throws Exception {
+    reset(provider);
+
+    UserDto userDto = new UserDto();
+    userDto.setGender("0");
+    userDto.setStatus("0");
+
+    String json = mapper.writeValueAsString(userDto);
+    JsonNode jsonNode = mapper.readTree(json);
+
+    assertTrue(jsonNode.get("genderText").isNull());
+    assertEquals("", jsonNode.get("statusText").asText());
+
+    verify(provider, times(1)).get("gender");
+    verify(provider, times(1)).get("status");
   }
 }

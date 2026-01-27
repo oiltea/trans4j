@@ -25,6 +25,7 @@ import java.util.Objects;
 import java.util.function.Function;
 import lombok.Getter;
 import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Annotation used to mark fields that require translation.
@@ -103,7 +104,7 @@ public @interface Translate {
      *
      * @see Function
      */
-    private final Function<String, String> handler;
+    private final Function<@Nullable String, @Nullable String> handler;
 
     /**
      * Creates a NullPolicy instance with the specified function.
@@ -112,7 +113,7 @@ public @interface Translate {
      *
      * @param handler the function to be used for null value handling
      */
-    NullPolicy(Function<String, String> handler) {
+    NullPolicy(Function<@Nullable String, @Nullable String> handler) {
       this.handler = handler;
     }
   }

@@ -36,15 +36,12 @@ public interface TranslationService {
    * arguments before delegating to the actual translation logic. If either the key or the value is
    * null, the method returns null.
    *
-   * @param key the translation key, can be null
+   * @param key the translation key, must not be null
    * @param value the value associated with the key for translation, can be null
    * @return the translated string, or null if either the key or value is null
    */
-  default String translate(String key, String value) {
-    if (key == null || value == null) {
-      return null;
-    }
-    return doTranslate(key, value);
+  default String translate(@NonNull String key, String value) {
+    return value == null ? null : doTranslate(key, value);
   }
 
   /**

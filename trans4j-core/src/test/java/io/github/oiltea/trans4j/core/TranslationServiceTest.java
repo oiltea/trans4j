@@ -34,8 +34,7 @@ class TranslationServiceTest {
   void setUp() {
     provider = Mockito.mock(TranslationProvider.class);
     when(provider.get("gender")).thenReturn(Map.of("1", "Male", "2", "Female"));
-    when(provider.get("status")).thenReturn(Map.of("active", "Active", "inactive", "Inactive"));
-    when(provider.get("role")).thenReturn(Map.of("admin", "Administrator", "user", "User"));
+    when(provider.get("status")).thenReturn(Map.of("1", "Active", "2", "Inactive"));
   }
 
   @Nested
@@ -50,26 +49,33 @@ class TranslationServiceTest {
     }
 
     @Test
-    @DisplayName("Should translate gender value correctly")
-    void should_translate_gender_value() {
-      String result = service.translate("gender", "1");
-      assertEquals("Male", result);
+    @DisplayName("Should return null when provider return null")
+    void should_return_null_when_provider_return_null() {
+      when(provider.get("gender")).thenReturn(null);
+      assertNull(service.translate("gender", "1"));
       verify(provider, times(1)).get("gender");
+      reset(provider);
     }
 
     @Test
-    @DisplayName("Should translate status value correctly")
-    void should_translate_status_value() {
-      String result = service.translate("status", "active");
-      assertEquals("Active", result);
-      verify(provider, times(1)).get("status");
+    @DisplayName("Should return null when value is null")
+    void should_return_null_when_value_is_null() {
+      assertNull(service.translate("gender", null));
+      verify(provider, never()).get("gender");
+    }
+
+    @Test
+    @DisplayName("Should translate gender value correctly")
+    void should_translate_gender_value() {
+      assertEquals("Male", service.translate("gender", "1"));
+      verify(provider, times(1)).get("gender");
     }
 
     @Test
     @DisplayName("Should return null for unmapped value")
     void should_return_null_for_unmapped_value() {
-      String result = service.translate("gender", "3");
-      assertNull(result);
+      assertNull(service.translate("gender", "0"));
+      verify(provider, times(1)).get("gender");
     }
 
     @Test
@@ -87,21 +93,10 @@ class TranslationServiceTest {
     @DisplayName("Should handle multiple different keys")
     void should_handle_multiple_keys() {
       assertEquals("Male", service.translate("gender", "1"));
-      assertEquals("Active", service.translate("status", "active"));
-      assertEquals("Administrator", service.translate("role", "admin"));
+      assertEquals("Active", service.translate("status", "1"));
 
       verify(provider, times(1)).get("gender");
       verify(provider, times(1)).get("status");
-      verify(provider, times(1)).get("role");
-    }
-
-    @Test
-    @DisplayName("Should handle empty translation map")
-    void should_handle_empty_map() {
-      when(provider.get("empty")).thenReturn(Map.of());
-
-      String result = service.translate("empty", "any");
-      assertNull(result);
     }
   }
 
@@ -119,24 +114,21 @@ class TranslationServiceTest {
     @Test
     @DisplayName("Should translate gender value correctly")
     void should_translate_gender_value() {
-      String result = service.translate("gender", "1");
-      assertEquals("Male", result);
+      assertEquals("Male", service.translate("gender", "1"));
       verify(provider, times(1)).get("gender");
     }
 
     @Test
     @DisplayName("Should translate status value correctly")
     void should_translate_status_value() {
-      String result = service.translate("status", "active");
-      assertEquals("Active", result);
+      assertEquals("Active", service.translate("status", "1"));
       verify(provider, times(1)).get("status");
     }
 
     @Test
     @DisplayName("Should return null for unmapped value")
     void should_return_null_for_unmapped_value() {
-      String result = service.translate("gender", "3");
-      assertNull(result);
+      assertNull(service.translate("gender", "0"));
     }
 
     @Test
@@ -154,9 +146,9 @@ class TranslationServiceTest {
     @DisplayName("Should cache independently for different keys")
     void should_cache_independently_for_different_keys() {
       service.translate("gender", "1");
-      service.translate("status", "active");
       service.translate("gender", "2");
-      service.translate("status", "inactive");
+      service.translate("status", "1");
+      service.translate("status", "2");
 
       // Each key should be fetched only once
       verify(provider, times(1)).get("gender");
@@ -167,21 +159,10 @@ class TranslationServiceTest {
     @DisplayName("Should handle multiple different keys")
     void should_handle_multiple_keys() {
       assertEquals("Male", service.translate("gender", "1"));
-      assertEquals("Active", service.translate("status", "active"));
-      assertEquals("Administrator", service.translate("role", "admin"));
+      assertEquals("Active", service.translate("status", "1"));
 
       verify(provider, times(1)).get("gender");
       verify(provider, times(1)).get("status");
-      verify(provider, times(1)).get("role");
-    }
-
-    @Test
-    @DisplayName("Should handle empty translation map")
-    void should_handle_empty_map() {
-      when(provider.get("empty")).thenReturn(Map.of());
-
-      String result = service.translate("empty", "any");
-      assertNull(result);
     }
 
     @Test
@@ -196,7 +177,7 @@ class TranslationServiceTest {
                 () -> {
                   for (int j = 0; j < 100; j++) {
                     service.translate("gender", "1");
-                    service.translate("status", "active");
+                    service.translate("status", "1");
                   }
                 });
         threads[i].start();
@@ -247,14 +228,8 @@ class TranslationServiceTest {
       SimpleTranslationService simpleService = new SimpleTranslationService(provider);
 
       assertEquals(defaultService.translate("gender", "1"), simpleService.translate("gender", "1"));
-
-      assertEquals(
-          defaultService.translate("status", "active"),
-          simpleService.translate("status", "active"));
-
-      assertEquals(
-          defaultService.translate("gender", "unknown"),
-          simpleService.translate("gender", "unknown"));
+      assertEquals(defaultService.translate("status", "1"), simpleService.translate("status", "1"));
+      assertEquals(defaultService.translate("gender", "0"), simpleService.translate("gender", "0"));
     }
   }
 }
